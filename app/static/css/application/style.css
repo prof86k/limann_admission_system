@@ -1,0 +1,50 @@
+body {
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a:hover {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.dashboard-cards:hover {
+    text-decoration: none;
+}
+
+.cards {
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+}
+
+body,
+html {
+    height: 100%;
+}
+
+.hide-fields {
+    display: none;
+}
+
+.show-fields {
+    display: block;
+}
+
+#show-results {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.postgra {
+    display: none;
+}
+
+#watermark {
+    background-image: url('../../images/watermark.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    backdrop-filter: blur;
+}

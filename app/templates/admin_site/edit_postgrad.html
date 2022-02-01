@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}
+    Edit {{post_programme}}
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin_panel.view_departments' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+    <div class="container col-md-10 post-form">
+        <h3>Edit {{post_programme}}</h3>
+        <hr class="bg-danger">
+        <form action="{{ url_for('admin_panel.edit_postgrad_programme',postgrad_programme_id=post_programme.id) }}" method="post">
+            <div class="modal-body">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <label for="programme_title">{{form.programme_title.label}}</label>
+                    {% for error in form.programme_title.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.programme_title(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    <label for="programme_duration">{{form.programme_duration.label}}</label>
+                    {% for error in form.programme_duration.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.programme_duration(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    <label for="min_gpa">{{form.min_gpa.label}}</label>
+                    {% for error in form.min_gpa.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.min_gpa(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    <label for="programme_admission_fees">{{form.programme_admission_fees.label}}</label>
+                    {% for error in form.programme_admission_fees.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.programme_admission_fees(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    <label for="active">{{form.active.label}}</label>
+                    {% for error in form.active.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.active()}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{form.submit(class="btn btn-success btn-block")}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

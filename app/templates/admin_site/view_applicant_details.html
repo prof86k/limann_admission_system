@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% block title %} view applicant details {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_and_admin_applicants' ) }}" class="btn btn-secondary">
+        Back <i class="fas fa-hand-point-left"></i>
+    </a>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h5 style="font-size:35px;">Applicant Summary Information</h5>
+        <hr class="my-3 bg-black">
+    </div>
+    <table class="table table-hover table-inverse table-responsive bg-white">
+        <thead class="thead-inverse">
+            <tr class="shadow-sm">
+                <th>Full Name</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>Education Level</th>
+                <th>Allow Edit</th>
+                {% if applicant.education.education_type == 'highSchool' %}
+                <th>Index No.</th>
+                {%endif%}
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="row">{{applicant}}</td>
+                <td>{{applicant.contact.contact_number}}</td>
+                <td>{{applicant.contact.email}}</td>
+                <td>{{applicant.education.education_type}}</td>
+                {% if applicant.education.education_type != 'highSchool' %}
+                <td><a id="allow" class="btn btn-success" href="#">Allow Edit</a>
+                    <input type="hidden" id="applicant" value="{{applicant.id}}">
+                </td> {% else %}
+                <td><a id="allow" class="btn btn-success" href="#">Allow Edit</a>
+                    <input type="hidden" id="applicant" value="{{applicant.id}}">
+                </td>
+                <td>
+                    {% for certificate in applicant.results.all() %} &NonBreakingSpace; |{{certificate}}| &NonBreakingSpace; {% endfor %}
+                </td>
+                {% endif %} {% if applicant.admission.admission_status =='admitted' %}
+                <td>
+                    <a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-info">Back</a>
+                </td>
+                {%else%}
+                <td>
+                    <a href="{{ url_for('admin_panel.view_and_admin_applicants' ) }}" class="btn btn-primary">Admit</a>
+                </td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <div class="row">
+            {% for cert_results in applicant.results.all() %}
+            <div class="col-md-6">
+                <h5 class="text-center">Index No. {{cert_results}}</h5>
+                <hr class="bg-black">
+                <table class="table text-center table-hover table-responsive mr-0 p-0 bg-white">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th class="col-md-2">Subject Title</th>
+                            <th class="col-md-2">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{cert_results.subject_core_1}}</td>
+                            <td>{{cert_results.core_grade_1}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_core_2}}</td>
+                            <td>{{cert_results.core_grade_2}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_core_3}}</td>
+                            <td>{{cert_results.core_grade_3}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_core_4}}</td>
+                            <td>{{cert_results.core_grade_4}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_elective_1}}</td>
+                            <td>{{cert_results.elective_grade_1}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_elective_2}}</td>
+                            <td>{{cert_results.elective_grade_2}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_elective_3}}</td>
+                            <td>{{cert_results.elective_grade_3}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{cert_results.subject_elective_4}}</td>
+                            <td>{{cert_results.elective_grade_4}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        let allow = document.querySelector('#allow');
+        let applicant = document.querySelector('#applicant');
+        allow.addEventListener('click', function() {
+            let go = confirm('Do you want to allow for applicant editting?')
+            if (go == true) {
+                this.href = '/admin/allow-edit/' + applicant.value;
+                alert('Applicant can now edit their application');
+            }
+        })
+    </script>
+    {% endblock %}

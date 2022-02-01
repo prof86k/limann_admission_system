@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    programmes by level
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin_panel.view_departments' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+    <h2 class=" text-center" style="font-size: 30px;">Graduate Level Programmes Information</h2>
+    <hr class="my-3 ">
+    {% for department in programmes %}
+        <h3 class="text-center mb-3 mt-2" style="font-size: 30px;">{{department}}</h3>            
+        {% if department.types.all() %}
+            {% for level in department.types.all() %}
+                <h4>{{level}} Programmes</h4>
+                <hr class="my-2">
+                <div class="row">
+                    {% if level.postgrad_programmes.all() %}
+                        <table class="table table-hover table-inverse table-responsive col-md-12 bg-white shadow-lg mt-1">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th class="col-md-2">Action</th>
+                                    <th class="col-md-2">Level</th>
+                                    <th class="col-md-2">Duration</th>
+                                    <th class="col-md-2">Avaliable</th>
+                                    <th class="col-md-2">Date Started</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for programme in level.postgrad_programmes.all() %}
+                                        <tr>
+                                            <td scope="row">
+                                                <a href="{{ url_for('admin_panel.edit_postgrad_programme',postgrad_programme_id=programme.id ) }}" class="btn btn-info btn-sm mb-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="{{ url_for('admin_panel.delete_programme',programme_id=programme.id) }}" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                            <td>{{programme.programme_title}}</td>
+                                            <td>{{programme.programme_duration}}</td>
+                                            <td>{{programme.active}}</td>
+                                            <td>{{programme.date_created}}</td>
+                                        </tr>
+                                    {% endfor %}                                
+                                </tbody>
+                        </table>
+                    {% else %}
+                        <div class="col-md-12">
+                            <div class="card border-0 mb-5">
+                              <div class="card-body text-danger text-center shadow-lg ">
+                                <h3 class="card-title"> No PROGRAMMES Under this LEVEL</h3>
+                                <p class="card-text text-info">Click on the PLUS sign on top to add a PROGRAMME.
+                                    Or
+                                    <a href="{{ url_for('admin_panel.view_level_programmes' ) }}" class="btn btn-info"> CLICK THIS LINK TO VIEW IF IT'S UNDERGRADUATE.</a>
+                                </p>
+                              </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    load Sujects
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm " style="border-radius: 13px  13px 0 0;">
+    <div class="text-center" style="display: flex; align-items:baseline; justify-content: space-between;">
+        <h4 >Add Subject</h4>
+        <span >
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modelId">
+              Add Subject
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Subject</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <form action="{{ url_for('admin_panel.create_subject') }}" method="post">
+                            <div class="modal-body">
+                                {{form.hidden_tag()}}
+                                <div class="form-group">
+                                    {% if form.subject_name.errors %}
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {% for error in form.subject_name.errors %}
+                                                {{error}}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                <label for="subject_name">{{form.subject_name.label()}}</label>
+                                {{form.subject_name(class="form-control")}}
+                                </div>
+                                <div class="form-group">
+                                    {% if form.subject_status.errors %}
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {% for error in form.subject_status.errors %}
+                                                {{error}}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <label for="subject_status">{{form.subject_status.label()}}</label>
+                                    {{form.subject_status(class="form-control")}}
+                                </div>
+                                <div class="form-group">
+                                    {% if form.min_grade.errors %}
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {% for error in form.min_grade.errors %}
+                                                {{error}}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <label for="min_grade">{{form.min_grade.label()}}</label>
+                                    {{form.min_grade(class="form-control")}}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{form.submit(class="btn btn-primary")}}                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+    <hr class="my-1">
+</div>
+<div class="mt-1">
+    {% with messages = get_flashed_messages(with_categories=true)  %}
+        {% for category,message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endwith %}
+</div>
+<h2 class="text-center" style="text-transform: capitalize;">{{programme}}</h2>
+<table class="table table-hover  table-responsive bg-white">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-2">No.</th>
+            <th class="col-md-2">Subject Name</th>
+            <th class="col-md-2">Subject/Programme Status</th>
+            <th class="col-md-2">Min Subject Grade/GPA</th>
+            <th class="col-md-2">Date Started</th>
+            <th class="col-md-2">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+                {% if subject %}
+                    <tr>
+                        <td scope="row">{{loop.index}}</td>
+                        <td>{{subject}}</td>
+                        <td>{{subject.subject_status}}</td>
+                        <td>{{subject.min_grade}}</td>
+                        <td>{{subject.date_created}}</td>
+                        <td>
+                            <a href="{{ url_for('admin_panel.delete_subject',subject_id=subject.id ) }}" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin_panel.edit_subject',subject_id=subject.id ) }}" class="btn btn-info btn-sm mb-1">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <p>No Information About This Department</p>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block title %} create scr dues {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary mb-1">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="card shadow-sm mb-3" style="border-radius: 13px  13px 0 0;">
+    <div class="row" style="display: flex; align-items: center; justify-content: space-around;">
+        <h4>CREATE SRC DUES</h4>
+        <span>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#modelId">
+            Add SRC Dues
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">User Dues</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="{{ url_for('admin_panel.add_sr_dues') }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.amount.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.username.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="amount">{{form.amount.label()}}</label> {{form.amount(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</span>
+</div>
+<hr class="bg-damger">
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+</div>
+{% endfor %} {% endwith %}
+<div class="row">
+    <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-2">No.</th>
+                <th class="col-md-2">Amount</th>
+                <th class="col-md-2">Date Added</th>
+                <th class="col-md-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in dues %} {% if item %}
+            <tr>
+                <td scope="row">{{loop.index}}</td>
+                <td>{{item.amount}}</td>
+                <td>{{item.date_added}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_dues',dues_id=item.id ) }}" class="btn btn-info btn-sm mb-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <p>No Information About SRC DUES yet</p>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

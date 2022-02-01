@@ -1,0 +1,227 @@
+{% extends 'layout.html' %} {% block title %} results {% endblock %} {% block content %}
+<div class="container post-form post-form mt-1 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 40px;">Add Results</h1>
+    <hr class="my-4"> {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+    </div>
+    {% endfor %}
+    <form action="#" method="post">
+        {{form.hidden_tag()}}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.cert_1_index_number.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.cert_1_index_number.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="cert_1_index_number">{{form.cert_1_index_number.label()}}</label> {{form.cert_1_index_number(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.results_type.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.results_type.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="cert_1_index_number">{{form.results_type.label()}}</label> {{form.results_type(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center elective">Select Core Subjects</h3>
+                <hr class="my-2">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <strong>Subject</strong>
+                <hr class="my2">
+                <div class="form-group">
+                    {% if form.core_subject_1.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.core_subject_1.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="core_subject_1">{{form.core_subject_1.label()}}</label> {{form.core_subject_1(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <strong>Results</strong>
+                <hr class="my2">
+                <div class="form-group">
+                    {% if form.grade_got_subject_1.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_subject_1.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_subject_1">{{form.grade_got_subject_1.label()}}</label> {{form.grade_got_subject_1(class="form-control")}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.core_subject_2.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.core_subject_2.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="core_subject_2">{{form.core_subject_2.label()}}</label> {{form.core_subject_2(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_subject_2.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_subject_2.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_subject_2">{{form.grade_got_subject_2.label()}}</label> {{form.grade_got_subject_2(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.core_subject_3.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.core_subject_3.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="core_subject_3">{{form.core_subject_3.label()}}</label> {{form.core_subject_3(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_subject_3.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_subject_3.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_subject_3">{{form.grade_got_subject_3.label()}}</label> {{form.grade_got_subject_3(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-md-group">
+                    {% if form.core_subject_4.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.core_subject_4.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="core_subject_4">{{form.core_subject_4.label()}}</label> {{form.core_subject_4(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_subject_4.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_subject_4.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_subject_4">{{form.grade_got_subject_4.label()}}</label> {{form.grade_got_subject_4(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <hr class="my-2">
+        <h3 class="text-center elective">Select Elective Subjects</h3>
+        <hr class="my-2">
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Subject</strong>
+                <hr class="my2">
+                <div class="form-group">
+                    {% if form.elective_subject_1.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.elective_subject_1.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="elective_subject_1">{{form.elective_subject_1.label()}}</label> {{form.elective_subject_1(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <strong>Select Results</strong>
+                <hr class="my2">
+                <div class="form-group">
+                    {% if form.grade_got_ele_subject_1.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_ele_subject_1.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_ele_subject_1">{{form.grade_got_ele_subject_1.label()}}</label> {{form.grade_got_ele_subject_1(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.elective_subject_2.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.elective_subject_2.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="elective_subject_2">{{form.elective_subject_2.label()}}</label> {{form.elective_subject_2(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_ele_subject_2.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_ele_subject_2.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_ele_subject_2">{{form.grade_got_ele_subject_2.label()}}</label> {{form.grade_got_ele_subject_2(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.elective_subject_3.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.elective_subject_3.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="elective_subject_3">{{form.elective_subject_3.label()}}</label> {{form.elective_subject_3(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_ele_subject_3.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_ele_subject_3.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_ele_subject_3">{{form.grade_got_ele_subject_3.label()}}</label> {{form.grade_got_ele_subject_3(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.elective_subject_4.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.elective_subject_4.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="elective_subject_4">{{form.elective_subject_4.label()}}</label> {{form.elective_subject_4(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.grade_got_ele_subject_4.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.grade_got_ele_subject_4.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="grade_got_ele_subject_4">{{form.grade_got_ele_subject_4.label()}}</label> {{form.grade_got_ele_subject_4(class="form-control")}}
+                </div>
+            </div>
+            <div class="form-group col-md-6  my-3">
+                {{form.submit(class="btn btn-block btn-primary ")}}
+            </div>
+            {% if applicant.results.count() > 0 %}
+            <div class="form-group col-md-6 my-3">
+                <a href="{{ url_for('application.applicant_employment_info',card_id=applicant.card.pin) }}" class="btn btn-primary btn-block">Next</a>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

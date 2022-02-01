@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% block title %} bank {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary mb-1">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="card shadow-sm mb-3" style="border-radius: 13px  13px 0 0;">
+    <div class="row" style="display: flex; align-items: center; justify-content: space-around;">
+        <h4>ADD BANK </h4>
+        <span>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#modelId">
+            Create Bank
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Bank Info</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="{{ url_for('admin_panel.add_bank') }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.bank_name.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.bank_name.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="bank_name">{{form.bank_name.label()}}</label> {{form.bank_name(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.transaction_mode.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.transaction_mode.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="transaction_mode">{{form.transaction_mode.label()}}</label> {{form.transaction_mode(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</span>
+</div>
+<hr class="bg-damger">
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+</div>
+{% endfor %} {% endwith %}
+<div class="row">
+    <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-2">No.</th>
+                <th class="col-md-2">Bank Name</th>
+                <th class="col-md-2">Transaction Mode</th>
+                <th class="col-md-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in bank %} {% if user %}
+            <tr>
+                <td scope="row">{{loop.index}}</td>
+                <td>{{user.bank_name}}</td>
+                <td>{{user.transaction_mode}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_bank',bank_id=user.id ) }}" class="btn btn-info btn-sm mb-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="" id="delete-bank" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                        <input type="hidden" id="bank-id" value="{{user.id}}" />
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <p>No Information About Users yet</p>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var deleteUsers = document.querySelectorAll('#delete-bank');
+    var userIds = document.querySelectorAll('#bank-id');
+    var url = '/admin/delete-bank/settings/';
+
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Do You Want To Delete This Bank?')
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                });
+            }
+        }
+    }
+    deleteItem(deleteUsers, userIds, url)
+</script>
+{% endblock %}

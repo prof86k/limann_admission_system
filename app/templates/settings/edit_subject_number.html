@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %} edit {{user.username}} {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.create_user' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="container col-md-8 post-form">
+    <h3>Change {{number}} </h3>
+    <hr class="bg-danger">
+    <form action="{{ url_for('admin_panel.edit_subject_number',number_id=number.id) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                <label for="number">{{form.number.label}}</label> {% for error in form.number.errors %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> {{error}} {% endfor %} {{form.number(class="form-control")}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{form.submit(class="btn btn-success")}}
+            </div>
+    </form>
+    </div>
+    {% endblock %}

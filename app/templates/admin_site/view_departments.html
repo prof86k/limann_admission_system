@@ -1,0 +1,85 @@
+{% extends 'base.html' %} {% block title %} View Departments {% endblock %} {% block content %}
+<div class="card shadow-sm">
+    <div class="row ">
+        <div class="col-md-12 text-center">
+            <h2 class=""> VIEW DEPARTMENT</h2>
+
+        </div>
+        <!-- Button trigger modal -->
+
+    </div>
+</div>
+{% for faculty in faculties %}
+<div class="mb-2">
+    <h4 class="text-center">{{faculty}}
+        <a href="{{ url_for('admin_panel.create_department',faculty_id=faculty.id ) }}" class="text-success" style="cursor: pointer; font-size: 35px; text-decoration:none;">+
+            </a>
+    </h4>
+</div>
+<hr class="my-1">
+
+<h3 class="text-center mb-2" style="font-size: 20px;">{{department}}</h3>
+{% if faculty.departments.all() %} {% for department in faculty.departments.all() %}
+<h4 class="mb-1">{{department}} Department<a href="{{ url_for('admin_panel.create_level',department_id=department.id ) }}" class="text-success" style="cursor: pointer; font-size: 35px; text-decoration:none;">+
+                    </a> </h4>
+<hr class="my-2">
+{% if department.types.all() %}
+<table class="table table-hover  table-responsive bg-white shadow-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-2">Action</th>
+            <th class="col-md-2">Level</th>
+            <th class="col-md-2">Avaliable</th>
+            <th class="col-md-2">Date Started</th>
+            <th class="col-md-2">Programmes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for level in department.types.all() %}
+        <tr>
+            <td>
+                <a href="{{ url_for('admin_panel.edit_level',level_id=level.id ) }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="#" id="level" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i>
+                    <input type="hidden" id="level-id" value="{{level.id}}">
+                </a>
+            </td>
+            <td>{{level}}</td>
+            <td>{{level.is_avaliable}}</td>
+            <td>{{level.date_created}}</td>
+            <td>
+                <a href="{{ url_for('admin_panel.create_level_programme',level_id=level.id ) }}" class="btn btn-primary btn-sm">
+                                                Add <i class="fas fa-plus"></i>   
+                                            </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{%endif%}
+{% endfor %} {% endif %}
+{% endfor %}
+<script>
+    var levels = document.querySelectorAll('#level');
+    var levelIds = document.querySelectorAll('#level-id');
+    var url = '/admin/delete-level/'
+
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Erase Record?');
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                })
+            }
+        }
+    }
+
+    deleteItem(levels, levelIds, url);
+</script>
+{% endblock %}

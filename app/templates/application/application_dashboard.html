@@ -1,0 +1,260 @@
+{% extends 'layout.html' %} {% block title %} application dashboard {% endblock %} {% block content %}
+<div class="col-md-6">
+    <a href="{{ url_for('application.submit_application_confirmation',card_id=applicant.card.pin ) }}" class="btn btn-warning">Back</a>
+</div>
+<div class="container-fluid">
+    <h1 class="text-center" style="font-size: 30px;">DashBoard</h1>
+    <hr class="my-2">
+
+    <div class="row">
+        <div class="col-lg-4 mb-3">
+            <a class="dashboard-cards person" href="{{ url_for('application.applicant_personal_info',card_id=applicant.card.pin ) }}">
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div class="card-body" style="color:#000">
+                                    <h3 class="card-title"><i class="fas fa-user-check 7px" style="font-size: 80px;"></i> PERSONAL INFORMATION</h3>
+                                    <p class="card-text">Fill In Your Personal Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_personel_info',card_id=applicant.card.pin ) }}" class="btn btn-outline-primary btn-block">Edit Information</a>
+                <style>
+                    .person {
+                        cursor: not-allowed;
+                    }
+                    
+                    .person h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %}
+        </div>
+        {% if applicant %}
+        <div class="col-lg-4 mb-3">
+            <a class="dashboard-cards contact" href="{{ url_for('application.applicant_contact_info',card_id=applicant.card.pin ) }}">
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div class="card-body" style="color:#000">
+                                    <h3 class="card-title"><i class="fas fa-address-card" style="font-size: 78px;"></i> PERSONAL CONTACT</h3>
+                                    <p class="card-text">Fill In Your Personal Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant.contact %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_personel_contact_info',card_id=applicant.card.pin ) }}" class="btn btn-outline-primary btn-block">Edit Information</a>
+                <style>
+                    .contact {
+                        cursor: not-allowed;
+                    }
+                    
+                    .contact h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %} {% if applicant.contact %}
+        <div class="col-lg-4 mb-3">
+            <a class="dashboard-cards education" href="{{ url_for('application.applicant_eductaion_info',card_id=applicant.card.pin ) }}">
+
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div class="card-body" style="color:#000">
+                                    <h3 class="card-title"><i class="fas fa-user-graduate" style="font-size: 80px;"></i> EDUCATION INFORMATION</h3>
+                                    <p class="card-text">Fill In Your Personal Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant.education %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_personel_education_info',card_id=applicant.card.pin ) }}" class="btn btn-outline-primary btn-block">Edit Information</a>
+                <style>
+                    .education {
+                        cursor: not-allowed;
+                    }
+                    
+                    .education h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %} {% if applicant.education %} {% if applicant.education.education_type == 'highSchool' %}
+        <div class="col-lg-4 mb-3">
+            <a class="dashboard-cards result" href="{{ url_for('application.applicant_results_info',card_id=applicant.card.pin ) }}">
+
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div class="card-body" style="color:#000">
+                                    <h3 class="card-title"><i class="far fa-file-user" style="font-size: 80px;"></i> RESULTS INFORMATION</h3>
+                                    <p class="card-text">Fill In Your Personal Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant.results.count() > 0 %}
+            <div class="card-footer">
+                <a href="{{url_for('application.applicant_new_results_info',card_id=applicant.card.pin)}}" class="btn btn-outline-primary btn-block">Edit Information</a>
+                <style>
+                    .result {
+                        cursor: not-allowed;
+                    }
+                    
+                    .result h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %} {% endif %} {% if applicant.employed %}
+        <div class="col-md-4 mb-3">
+            <div class="card text-center cards">
+                <div class="p-4">
+                    <div class="row">
+                        <div class="col-lg-1-12">
+                            <div class="card-body" style="color:#000">
+                                <h3 class="card-title"><i class="fas fa-user-tie" style="font-size: 80px;"></i> EMPLOYMENT INFORMATION</h3>
+                                <p class="card-text">Fill In Your Previous Employment Information</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %} {% if applicant.education %}
+        <div class="col-md-4 mb-3">
+            <a class="dashboard-cards referee" href="{{ url_for('application.applicant_refeeres_info',card_id=applicant.card.pin ) }}">
+
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div class="card-body" style="color:#000">
+                                    <h3><i class="fas fa-user-tag" style="font-size: 80px;"></i> REFEERE'S/GUARDIAN INFORMATION</h3>
+                                    <p class="card-text">Fill In Your Guardian/Refeere's Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant.referee %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_referee_info',card_id=applicant.card.pin ) }}" class="btn btn-outline-primary btn-block">Edit Information</a>
+                <style>
+                    .referee {
+                        cursor: not-allowed;
+                    }
+                    
+                    .referee h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% if applicant.education %}
+        <div class="col-md-12 mb-3">
+            {% if applicant.card.buy.application_type=='PDG' %}
+            <a class="dashboard-cards choice" href="{{ url_for('application.applicant_postgrad_choices_info',card_id=applicant.card.pin ) }}">
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div style="color:#000" class="card-body">
+                                    <h3>
+                                        <i class="fas fa-ballot-check" style="font-size: 80px;"></i> SELECT CHOICES</h3>
+                                    <p class="card-text">Fill In Your programme of Choice Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if applicant.choice %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_choices_info',card_id=applicant.card.pin ) }}" class="btn btn-primary btn-block">Edit Information</a>
+                <style>
+                    .choice {
+                        cursor: not-allowed;
+                    }
+                    
+                    .choice h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %} {% else %}
+            <a class="dashboard-cards choice" href="{{ url_for('application.applicant_choices_info',card_id=applicant.card.pin ) }}">
+                <div class="card text-center cards">
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-1-12">
+                                <div style="color:#000" class="card-body">
+                                    <h3>
+                                        <i class="fas fa-ballot-check" style="font-size: 80px;"></i> SELECT CHOICES</h3>
+                                    <p class="card-text">Fill In Your programme of Choice Information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a> {% if applicant.choice %}
+            <div class="card-footer">
+                <a href="{{ url_for('application.edit_choices_info',card_id=applicant.card.pin ) }}" class="btn btn-primary btn-block">Edit Information</a>
+                <style>
+                    .choice {
+                        cursor: not-allowed;
+                    }
+                    
+                    .choice h3,
+                    p {
+                        color: #1e664e;
+                    }
+                </style>
+            </div>
+            {% endif %} {% endif %}
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('application.submit_application_confirmation',card_id=applicant.card.pin ) }}" class="btn btn-warning btn-block">Proceed to Confirm</a>
+
+    </div>
+</div>
+
+{% endblock %}

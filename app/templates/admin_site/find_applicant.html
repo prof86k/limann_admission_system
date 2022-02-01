@@ -1,0 +1,334 @@
+{% extends 'base.html' %} {% block title %} view |{{card.applicant}}{% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_and_admin_applicants' ) }}" class="btn btn-secondary">
+        Back <i class="fas fa-hand-point-left"></i>
+    </a>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h5 class="display-4 text-center" style="font-size:35px;">Applicant Summary Information</h5>
+        <div>
+            <table class="table table-bordered table-condensed bg-white">
+                <thead>
+                    <tr>
+                        <th>Application Status</th>
+                        <th>Admission Status</th>
+                        <th>Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{% if card.applicant.agreed.agreed==True %}<em>Submitted</em>{% elif card.applicant.agreed.agreed==False %}<em>Under Edit</em>{%else%}<em>Not Submitted</em>{%endif%}</td>
+                        <td>{% if card.applicant.admission %}<em>{{card.applicant.admission.admission_status}}<em></em>{% else %}<em>Not Admitted</em>{%endif%}</td>
+                        <td>{% if card.applicant.agreed.agreed==True and not card.applicant.admission.admission_status %}
+                            <a id="allow" class="btn btn-success" href="#">Allow Edit</a>
+                            <input type="hidden" id="applicant" value="{{card.applicant.id}}">
+                            {% elif card.applicant.admission.admission_status %}
+                            <a href="{{ url_for('admin_panel.edit_admission',admission_id=card.applicant.admission.id ) }}" class="btn btn-primary btn-sm">
+                                Edit Admission
+                            </a>
+                            {%endif%}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="my-3 bg-black">
+    </div>
+    <div class="row section-break">
+        <div class="col-md-12">
+            <!-- applicant personal information -->
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT PERSONAL INFORMATION</h2>
+            </div>
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Gender/Sex</th>
+                        <th>Birth Date</th>
+                        <th>Home Town</th>
+                        <th>Home Region</th>
+                        <th>Marital status</th>
+                        <th>No. Children</th>
+                        <th>Religion</th>
+                        <th>Sponsorship</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{card.applicant|upper}}</td>
+                        <td>{{card.applicant.gender|upper}}</td>
+                        <td>{{card.applicant.date_of_birth|upper}}</td>
+                        <td>{{card.applicant.home_town|upper}}</td>
+                        <td>{{card.applicant.home_region|upper}}</td>
+                        <td>{{card.applicant.marital_status|upper}}</td>
+                        <td>{{card.applicant.childrens|upper}}</td>
+                        <td>{{card.applicant.religion|upper}}</td>
+                        <td>{{card.applicant.sponsorship|upper}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- applicant contact information -->
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT CONTACT INFORMATION</h2>
+            </div>
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th class="col-md-0">Country</th>
+                        <th class="col-md-0">Contact No.1</th>
+                        <th class="col-md-0">Email</th>
+                        <th class="col-md-0">Residence Address</th>
+                        <th class="col-md-0">Postal Address</th>
+                        <th class="col-md-0">Digital Address</th>
+                        <th>Alternate No.</th>
+                        <th class="col-md-0">Postal Region</th>
+                        <th class="col-md-0">Postal Town</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{card.applicant.contact.country|upper}}</td>
+                        <td>{{card.applicant.contact.contact_number|upper}}</td>
+                        <td>{{card.applicant.contact}}</td>
+                        <td>{{card.applicant.contact.residence_address|upper}}</td>
+                        <td>{{card.applicant.contact.postal_address|upper}}</td>
+                        <td>{{card.applicant.contact.digital_address|upper}}</td>
+                        <td>{{card.applicant.contact.contact_number_2|upper}}</td>
+                        <td>{{card.applicant.contact.post_region|upper}}</td>
+                        <td>{{card.applicant.contact.post_town|upper}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- applicant educational history -->
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT EDUCATIONAL HISTORY</h2>
+            </div>
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th>School Name</th>
+                        <th>Location</th>
+                        <th>Date Started</th>
+                        <th>Date Completed</th>
+                        <th>Programmme Offered</th>
+                        <th>Level of Education</th>
+                        {% if card.applicant.education.education_type !='highSchool' %}
+                        <th>Graduated Class</th>
+                        <th>Graduated GPA</th>
+                        {% endif %}
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{card.applicant.education|upper}}</td>
+                        <td>{{card.applicant.education.location|upper}}</td>
+                        <td>{{card.applicant.education.date_started|upper}}</td>
+                        <td>{{card.applicant.education.date_completed|upper}}</td>
+                        <td>{{card.applicant.education.offered_programme|upper}}</td>
+                        <td>{{card.applicant.education.education_type|upper}}</td>
+                        {% if card.applicant.education.education_type !='highSchool' %}
+                        <td>{{card.applicant.education.graduated_class}}</td>
+                        <td>{{card.applicant.education.graduated_gpa}}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Applicant Employment History -->
+            {% if card.applicant.employed %} {% for employment in card.applicant.employments.all() %}
+            <div class="print-heading" style="margin-top: 10px;">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT EMPLOYMENT HISTORY</h2>
+            </div>
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th>Organization's Name</th>
+                        <th>Organization's Address</th>
+                        <th>Organization's Contact</th>
+                        <th>Postion Held</th>
+                        <th>Date Started</th>
+                        <th>Date Ended</th>
+                        <th>Years of Experience</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{employment|upper}}</td>
+                        <td>{{employment.organisation_address|upper}}</td>
+                        <td>{{employment.organisation_contact|upper}}</td>
+                        <td>{{employment.position_held|upper}}</td>
+                        <td>{{employment.date_started|upper}}</td>
+                        <td>{{employment.date_ended|upper}}</td>
+                        <td>{{employment.years_of_work_experience()|upper}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %} {% endif %}
+            <!-- applicant Referee or Guidian Information -->
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT GUIDIAN / REFEREE'S INFORMATION</h2>
+            </div>
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th class="table-sr">Sr</th>
+                        <th class="col-md-2">Guardian Name</th>
+                        <th class="col-md-2">Work Place</th>
+                        <th class="col-md-2">Postal Address</th>
+                        <th class="col-md-2">Email Address</th>
+                        <th class="col-md-2">Contact No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-sr">1</td>
+                        <td>
+                            <div class="value">{{card.applicant.referee}}</div>
+                        </td>
+                        <td>
+                            <div class="value">{{card.applicant.referee.referees_work_place}}</div>
+                        </td>
+                        <td>
+                            <div class="value">{{card.applicant.referee.referees_address}}</div>
+                        </td>
+                        <td>
+                            <div class="value">{{card.applicant.referee.referees_email}}</div>
+                        </td>
+                        <td>
+                            <div class="value">{{card.applicant.referee.referees_contact}}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- applicant programme of choice information -->
+    <div class="row section-break">
+        <div data-fieldname="program_to_pursue" data-fieldtype="Table">
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT SELECTED CHOICES</h2>
+            </div>
+            {% if card.applicant.choice or card.applicant.postgradchoice %}
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">No.</th>
+                        <th class="col-md-4">Programme</th>
+                        <th class="col-md-4">Type Of Program</th>
+                        <th class="col-md-4">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-sr">1</td>
+                        <td>
+                            <div>{{first_ch_programme}}</div>
+                        </td>
+                        <td>
+                            <div>{{first_ch_programme.type}}</div>
+                        </td>
+                        <td>
+                            <div>{{first_ch_programme.programme_duration}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div>{{second_ch_programme}}</div>
+                        </td>
+                        <td>
+                            <div>{{second_ch_programme.type}}</div>
+                        </td>
+                        <td>
+                            <div>{{second_ch_programme.programme_duration}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <div>{{third_ch_programme}}</div>
+                        </td>
+                        <td>
+                            <div>{{third_ch_programme.type}}</div>
+                        </td>
+                        <td>
+                            <div>{{third_ch_programme.programme_duration}}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <h3>You have not selected any programme of your choice</h3>
+            {% endif %}
+        </div>
+    </div>
+    <!-- applicant results information -->
+    <div class="col-md-12 column-break">
+        {% if card.applicant.results.all() %}
+        <div>
+            <div class="print-heading">
+                <h2 class="display-4 text-center" style="font-size:35px;">APPLICANT RESULTS INFORMATION</h2>
+            </div>
+            {% for result in card.applicant.results.all() %}
+            <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+                <thead>
+                    <tr>
+                        <th>Index Number</th>
+                        <td>{{result}}</td>
+                        <th>Examination Type</th>
+                        <td>{{result.results_type|upper}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr style="margin-left: 10px;">
+                        <td class="mb-2 text-center"></td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <th>{{result.subject_core_1}}</th>
+                        <td>{{result.core_grade_1}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_core_2}}</th>
+                        <td>{{result.core_grade_2}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_core_3}}</th>
+                        <td>{{result.core_grade_3}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_core_4}}</th>
+                        <td>{{result.core_grade_4}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_elective_1}}</th>
+                        <td>{{result.elective_grade_1}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_elective_2}}</th>
+                        <td>{{result.elective_grade_2}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_elective_3}}</th>
+                        <td>{{result.elective_grade_3}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{result.subject_elective_4}}</th>
+                        <td>{{result.elective_grade_4}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+    <script>
+        let allow = document.querySelector('#allow');
+        let applicant = document.querySelector('#applicant');
+        allow.addEventListener('click', function() {
+            let go = confirm('Do you want to allow for applicant editting?')
+            if (go == true) {
+                this.href = '/admin/allow-edit/' + applicant.value;
+                alert('Applicant can now edit their application');
+            }
+        })
+    </script>
+    {% endblock %}

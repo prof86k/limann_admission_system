@@ -1,0 +1,125 @@
+{% extends 'base.html' %} {% block title %} create user {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary mb-1">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="card shadow-sm mb-3" style="border-radius: 13px  13px 0 0;">
+    <div class="row" style="display: flex; align-items: center; justify-content: space-around;">
+        <h4>CREATE USERS</h4>
+        <span>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#modelId">
+            Create User
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">User Info</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="{{ url_for('admin_panel.create_user') }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.username.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.username.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="username">{{form.username.label()}}</label> {{form.username(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.email.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.email.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="email">{{form.email.label()}}</label> {{form.email(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.password.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.password.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="password">{{form.password.label()}}</label> {{form.password(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</span>
+</div>
+<hr class="bg-damger">
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+</div>
+{% endfor %} {% endwith %}
+<div class="row">
+    <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-2">No.</th>
+                <th class="col-md-2">Username</th>
+                <th class="col-md-2">Email</th>
+                <th class="col-md-2">User Role</th>
+                <th class="col-md-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %} {% if user %}
+            <tr>
+                <td scope="row">{{loop.index}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.roles}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_user_info',user_id=user.id ) }}" class="btn btn-info btn-sm mb-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="" id="delete-user" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                        <input type="hidden" id="user-id" value="{{user.id}}" />
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <p>No Information About Users yet</p>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var deleteUsers = document.querySelectorAll('#delete-user');
+    var userIds = document.querySelectorAll('#user-id');
+    var url = '/admin/delete-user/';
+
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Do You Want To Delete This User?')
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                });
+            }
+        }
+    }
+    deleteItem(deleteUsers, userIds, url)
+</script>
+{% endblock %}

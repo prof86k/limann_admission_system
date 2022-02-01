@@ -1,0 +1,162 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    contact info
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <a href="#" class="btn btn-warning">Back</a>
+    </div>
+    <div class="col-md-6">
+        <a href="" class="btn btn-warning offset-md-11">Next</a>
+    </div>
+</div>
+    <div class="container post-form col-md-9 post-form mt-2 mb-5">
+        <h1 class="text-center" style="font-size: 30px;">Edit Contact Information</h1>
+        <hr class="my-4">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+        {% endfor %}
+        <form action="#" method="post">
+            {{form.hidden_tag()}}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.country.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.country.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="country">{{form.country.label()}}</label>
+                        {{form.country(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.contact_number.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.contact_number.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="contact_number">{{form.contact_number.label()}}</label>
+                        {{form.contact_number(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.contact_number_2.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.contact_number_2.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="contact_number_2">{{form.contact_number_2.label()}}</label>
+                        {{form.contact_number_2(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.email.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.email.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="email">{{form.email.label()}}</label>
+                        {{form.email(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.residence_address.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.residence_address.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="residence_address">{{form.residence_address.label()}}</label>
+                        {{form.residence_address(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.digital_address.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.digital_address.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="digital_address">{{form.digital_address.label()}}</label>
+                        {{form.digital_address(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.postal_address.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.postal_address.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="postal_address">{{form.postal_address.label()}}</label>
+                        {{form.postal_address(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {% if form.post_town.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.post_town.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="post_town">{{form.post_town.label()}}</label>
+                        {{form.post_town(class="form-control")}}
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                        {% if form.post_region.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {% for error in form.post_region.errors %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <label for="post_region">{{form.post_region.label()}}</label>
+                        {{form.post_region(class="form-control")}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6 offset-md-3">
+                {{form.submit(class="btn btn-primary btn-block")}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

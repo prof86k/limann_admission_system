@@ -1,0 +1,78 @@
+{% extends 'base.html' %} {% block title %} admitted Undergraudates students {% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-2">
+    </div>
+</div>
+<div class="row ">
+    <div class="col-md-12" style="display: flex; justify-content:flex-start; align-content:space-between">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6 form-group">
+        </div>
+        <div class="col-md-3">
+            <a href="#" class="btn btn-success">
+                <i class="fas fa-download"></i>  Admitted Applicants
+            </a>
+        </div>
+    </div>
+    <div class="col-md-12 text-center">
+        <h4>ADMITTED APPLICANTS</h4>
+        <hr class="bg-danger">
+    </div>
+</div>
+Total {{admitted.per_page}} of {{admitted.total}}
+<table class="table table-bordered bg-white table-inverse table-responsive shadow-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-1">No.</th>
+            <th class="col-md-2">Student ID</th>
+            <th class="col-md-2">Student Name</th>
+            <th class="col-md-2">Progamme</th>
+            <th class="col-md-2">Admission Status</th>
+            <th class="col-md-2">Level</th>
+            <th class="col-md-2">Admission Fees</th>
+            <th class="col-md-2">Department</th>
+            <th class="col-md-2">Edit Admission</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for applicant in admitted.items %} {% if applicant.admission %}
+        <tr>
+            <td scope="row">{{loop.index}}</td>
+            <td>{{applicant.admission.student_id}}</td>
+            <td>{{applicant}}</td>
+            <td>{{applicant.admission.programme_listed}}</td>
+            <td>{{applicant.admission.admission_status}}</td>
+            <td>{{applicant.admission.type}}</td>
+            <td>
+                {{applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_admission_fees}} {{applicant.admission.type.postgrad_programmes.filter_by(programme_title=applicant.admission.programme_listed).first().programme_admission_fees}}
+            </td>
+            <td>{{applicant.admission.type.department}}</td>
+            <td>
+                <a href="{{ url_for('admin_panel.edit_admission',admission_id=applicant.admission.id ) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+        {% endif %} {% endfor %}
+    </tbody>
+</table>
+<div class="col-md-12 text-center">
+    {% for page_num in admitted.iter_pages(left_edge=1,left_current=1,right_current=1,right_edge=1) %} {% if page_num %} {% if admitted.page == page_num %}
+    <a href="{{ url_for('admin_panel.view_all_admitted_students',page=page_num ) }}" class="btn btn-info mr-3">{{page_num}}</a> {% else %}
+    <a href="{{ url_for('admin_panel.view_all_admitted_students',page=page_num ) }}" class="btn btn-outline-info mr-3">{{page_num}}</a> {% endif %} {% else %} &hellip; {% endif %} {% endfor %}
+</div>
+
+<script>
+    var perPage = document.querySelector("#items-per-page");
+    var even = document.querySelector('tbody');
+    // console.log(even.children)
+    for (let index = 0; index < even.children.length; index++) {
+        var element = index;
+        if (element % 2 == 0) {
+            even.children[element].style.backgroundColor = '#e0f2fa';
+        }
+
+    }
+</script>
+{% endblock %}

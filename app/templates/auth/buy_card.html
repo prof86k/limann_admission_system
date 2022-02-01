@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+<!--  -->
+{% block title %} buy card {% endblock %}
+
+<!--  -->
+{% block content %}
+
+<div class="container post-form col-md-8 post-form mt-2 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 30px;">CREATE ACCOUNT</h1>
+    <hr class="my-4 bg-danger"> {% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> {{message}}
+    </div>
+    {% endfor %} {% endwith %}
+    <form action="{{ url_for('auth.buy_card' ) }}" method="post">
+        {{form.hidden_tag()}}
+        <!--  -->
+        {% if form.errors %} {{form.errors}} {% endif %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.applicants_full_name.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.applicants_full_name.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="applicants_full_name">{{form.applicants_full_name.label()}}</label>
+                    <br> {{form.applicants_full_name(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.applicants_email.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.applicants_email.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="applicants_email">{{form.applicants_email.label()}}</label> {{form.applicants_email(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.applicants_contact.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.applicants_contact.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="applicants_contact">{{form.applicants_contact.label()}}</label> {{form.applicants_contact(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.application_type.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.application_type.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="application_type">{{form.application_type.label()}}</label> {{form.application_type(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.payment_mode.errors %}
+                    <div clsass="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.payment_mode.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="payment_mode">{{form.payment_mode.label()}}</label> {{form.payment_mode(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.amount.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.amount.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="amount">{{form.amount.label()}}</label> {{form.amount(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="form-group mt-4 mb-4">
+            {{form.submit(class="btn btn-block btn-primary")}}
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var app_type = document.querySelector('#application_type');
+        var amount = document.querySelector('#amount');
+        var mode = document.querySelector('#payment_mode');
+        fetch('get-card/' + parseInt(app_type.value)).then(function(response) {
+            response.json().then(function(data) {
+                amount.value = data['results']['amount'];
+                mode.value = data['results']['state'];
+                amount.classList.add('amount');
+            });
+        });
+        app_type.addEventListener('change', function() {
+            fetch('get-card/' + parseInt(this.value)).then(function(response) {
+                response.json().then(function(data) {
+                    amount.value = data['results']['amount'];
+                    mode.value = data['results']['state'];
+                    amount.classList.add('amount');
+                });
+            });
+        });
+    })
+</script>
+{% endblock %}

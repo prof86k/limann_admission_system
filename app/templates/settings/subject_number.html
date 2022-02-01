@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block title %} number {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="col-md-12">
+    <h1>Add</h1>
+</div>
+<button type="button" class="btn btn-success btn-block p-2 mb-3" data-toggle="modal" data-target="#modelId">
+    set grading subject number
+</button>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <form action="{{ url_for('admin_panel.subject_number_for_grade') }}" method="post">
+                <div class="modal-body">
+                    {{form.hidden_tag()}}
+                    <div class="form-group">
+                        <label for="number">{{form.number.label}}</label> {% for error in form.number.errors %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> {{error}} {% endfor %} {{form.number(class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{form.submit(class="btn btn-success")}}
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

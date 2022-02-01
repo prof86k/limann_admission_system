@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block title %} create subjects {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary mb-1">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="card shadow-sm mb-3" style="border-radius: 13px  13px 0 0;">
+    <div class="row" style="display: flex; align-items: center; justify-content: space-around;">
+        <h4>Add Subjects</h4>
+        <span>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#modelId">
+            Add Subjects
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Subjects</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="{{ url_for('admin_panel.subjects_for_grades') }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.subject_name.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.username.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="subject_name">{{form.subject_name.label()}}</label> {{form.username(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.subject_status.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.email.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="subject_status">{{form.subject_status.label()}}</label> {{form.email(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.min_grade.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.password.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="min_grade">{{form.min_grade.label()}}</label> {{form.password(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</span>
+</div>
+<hr class="bg-damger">
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+</div>
+{% endfor %} {% endwith %}
+<div class="row">
+    <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-2">No.</th>
+                <th class="col-md-2">Subject Name</th>
+                <th class="col-md-2">Subject Status</th>
+                <th class="col-md-2">Min Grade</th>
+                <th class="col-md-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %} {% if subject %}
+            <tr>
+                <td scope="row">{{loop.index}}</td>
+                <td>{{subject.subject_name}}</td>
+                <td>{{subject.subject_status}}</td>
+                <td>{{subject.min_grade}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_subjects_4',subject_id=subject.id ) }}" class="btn btn-info btn-sm mb-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="" id="delete-subject" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                        <input type="hidden" id="subject-id" value="{{subject.id}}" />
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <p>No Information About Core Subjects for grades yet</p>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var subjectName = document.querySelector('#subject_id');
+    var subjectStatus = document.querySelector('#status_id');
+    var minGrade = document.querySelector('#grade_id');
+
+    subjectName.addEventListener('change', function(event) {
+        fetch('/get-subject-4/' + event.value).then(function(response) {
+            response.json().then(function(data) {
+                subjectStatus.value = data['subject_status'];
+                minGrade.value = data['min_grade'];
+            });
+        });
+    })
+
+    var deleteUsers = document.querySelectorAll('#delete-subject');
+    var userIds = document.querySelectorAll('#subject-id');
+    var url = '/admin/delete-subject/settings/';
+
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Do You Want To Delete This Subject?')
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                });
+            }
+        }
+    }
+    deleteItem(deleteUsers, userIds, url)
+</script>
+{% endblock %}

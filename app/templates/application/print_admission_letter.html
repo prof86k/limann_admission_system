@@ -1,0 +1,354 @@
+{% extends 'layout.html' %} {% block title %} admission letter {% endblock %} {% block content %}
+<link type="text/css" rel="stylesheet">
+<style>
+    @media screen {
+        .print-format-gutter {
+            background-color: #d1d8dd;
+            padding: 30px 0px;
+        }
+        .print-format {
+            background-color: white;
+            box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+            max-width: 8.3in;
+            min-height: 11.69in;
+            padding: 0.75in;
+            margin: auto;
+        }
+        .print-format.landscape {
+            max-width: 11.69in;
+            padding: 0.2in;
+        }
+        .page-break {
+            padding: 30px 0px;
+            border-bottom: 1px dashed #888;
+        }
+        .page-break:first-child {
+            padding-top: 0px;
+        }
+        .page-break:last-child {
+            border-bottom: 0px;
+        }
+        /* mozilla hack for images in table */
+        body:last-child .print-format td img {
+            width: 100% !important;
+        }
+        @media(max-width: 767px) {
+            .print-format {
+                padding: 0.2in;
+            }
+        }
+    }
+    
+    @media print {
+        .print-format p {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+    }
+    
+    .disabled-check {
+        color: #eee;
+    }
+    
+    .data-field {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .data-field .value {
+        word-wrap: break-word;
+    }
+    
+    .important .value {
+        font-size: 120%;
+        font-weight: bold;
+    }
+    
+    .important label {
+        line-height: 1.8;
+        margin: 0px;
+    }
+    
+    .table {
+        margin: 20px 0px;
+    }
+    
+    .square-image {
+        width: 100%;
+        height: 0;
+        padding: 50% 0;
+        background-size: contain;
+        /*background-size: cover;*/
+        background-repeat: no-repeat !important;
+        background-position: center center;
+        border-radius: 4px;
+    }
+    
+    .print-item-image {
+        object-fit: contain;
+    }
+    
+    .pdf-variables,
+    .pdf-variable,
+    .visible-pdf {
+        display: none !important;
+    }
+    
+    .print-format {
+        font-size: 18px;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Open Sans", sans-serif;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .page-break {
+        page-break-after: always;
+    }
+    
+    .print-heading {
+        border-bottom: 1px solid #aaa;
+        margin-bottom: 10px;
+    }
+    
+    .print-heading h2 {
+        margin: 0px;
+    }
+    
+    .print-heading h4 {
+        margin-top: 5px;
+    }
+    
+    table.no-border,
+    table.no-border td {
+        border: 0px;
+    }
+    
+    .print-format label {
+        /* wkhtmltopdf breaks label into multiple lines when it is inline-block */
+        display: block;
+    }
+    
+    .print-format img {
+        max-width: 100%;
+    }
+    
+    .print-format table td>.primary:first-child {
+        font-weight: bold;
+    }
+    
+    .print-format td,
+    .print-format th {
+        vertical-align: top !important;
+        padding: 6px !important;
+    }
+    
+    .print-format p {
+        margin: 3px 0px 3px;
+    }
+    
+    .print-format table td pre {
+        white-space: normal;
+        word-break: normal;
+    }
+    
+    table td div {
+        /* needed to avoid partial cutting of text between page break in wkhtmltopdf */
+        page-break-inside: avoid !important;
+    }
+    /* hack for webkit specific browser */
+    
+    @media (-webkit-min-device-pixel-ratio:0) {
+        thead,
+        tfoot {
+            display: table-header-group;
+        }
+    }
+    
+    [document-status] {
+        margin-bottom: 5mm;
+    }
+    
+    .signature-img {
+        background: #fff;
+        border-radius: 3px;
+        margin-top: 5px;
+        max-height: 150px;
+    }
+    
+    .print-preview [data-fieldtype="Table"] {
+        overflow: auto;
+    }
+    
+    .print-heading {
+        text-align: right;
+        text-transform: uppercase;
+        color: #666;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #d1d8dd;
+    }
+    
+    .print-heading h2 {
+        font-size: 24px;
+    }
+    
+    .print-format th {
+        background-color: #eeeeee !important;
+        border-bottom: 0px !important;
+    }
+    
+    tr .applicant {
+        background-color: #fff !important;
+        border-bottom: 0px !important;
+    }
+    /* modern format: for-test */
+</style>
+<div class="print-format-gutter">
+    <div class="print-format">
+        <div class="page-break">
+            <div>
+                <div class="letter-head">
+                    <img src="{{ url_for('static',filename='images/me1.png' ) }}" style="width: 100%;">
+                </div>
+                <div class="print-heading">
+                    <img src="{{ applicant_image }}" style="width: 20%; height:100%;">
+                    <h2>Student<br> <b>UIN</b>: <small>{{applicant.admission.student_id}}</small>
+                    </h2>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Mr./Mrs/Miss </strong>{{applicant}}.</p>
+                    <div class="text-center">
+                        <h5><strong>OFFER OF ADMISSION: {{applicant.admission.programme_listed}}</strong></h5>
+
+                    </div>
+                    <ol>
+                        <li>
+                            <p>
+                                I write on behalf of the Academic Board of DR. HILLA LIMANN TECHNICAL UNIVERSITY to offer you addmission to pursue a
+                                <strong>
+                                    {% if applicant.agreed.admission_type == 'mature_topup' %}
+                                        {{applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_duration_topup}} Top Up for 
+                                    {% else %}
+                                    {{applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_duration_direct}}
+                                    {% endif %}
+									{{applicant.admission.type.postgrad_programmes.filter_by(programme_title=applicant.admission.programme_listed).first().programme_duration}}
+								</strong>
+                                <strong>{{applicant.admission.programme_listed}}.</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Your permanent University Identification Number (UIN) is <strong>{{applicant.admission.student_id}}.</strong> Your are required to qoute this number in addition to your full name, in any official communication with the
+                                university.
+                            </p>
+
+                        </li>
+                        <li>
+                            Your admission is for the
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>/
+                            <script>
+                                document.write(new Date().getFullYear() + 1)
+                            </script> Academic year only. You forfeit it if you fail to enroll this year.
+                        </li>
+                        <li>
+                            Your admission is on the basis of the results/certificate you presented. These credentials will be verified later and you will be withdrawn from and possibly prosecuted if they are found to be fake.
+                        </li>
+                        <li>
+                            The University has a limited accommodation on the campus which is offered on first come first serve basis with priority for the first year students. Please, you may consult the Dean of Student's Office for accommodation on campus.
+                        </li>
+                        <li>
+                            The University does not give direct financial assistance to students. However, students may visit the Students Loan Trust Fund (SLTF) office to access a loan.
+                        </li>
+                        <li>
+                            You will be be required to pay a total fee of <strong> GH&cent; 
+                                {% if applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_admission_fees %}
+                                    {{applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_admission_fees + dues.amount}}
+								{% else %}
+                                    {{applicant.admission.type.postgrad_programmes.filter_by(programme_title=applicant.admission.programme_listed).first().programme_admission_fees + dues.amount}}
+                                {%endif%}
+							</strong> for the
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>/
+                            <script>
+                                document.write(new Date().getFullYear() + 1)
+                            </script> Academic Year, which is subject to review. The total fees consist of:
+                            <ul>
+                                <li>Academic Facility User Fee (AFUF) and Other Charges -
+                                    <strong>
+										 GH&cent; {{applicant.admission.type.programmes.filter_by(programme_name=applicant.admission.programme_listed).first().programme_admission_fees}} {{applicant.admission.type.postgrad_programmes.filter_by(programme_title=applicant.admission.programme_listed).first().programme_admission_fees}}
+								</strong>
+                                </li>
+                                <li>SRC DUES GH&cent;<strong>{{dues}}</strong></li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            The payment should be made at any netword branch of <b>{% for bank in banks %}
+                                {{bank}},
+                            {% endfor %}</b> if you accept the offer of admission. Please, inform the Teller should use {% for bank in banks %}
+                            <div>
+                                <b>{{bank}}</b> Mode of payment <b>{{bank.transaction_mode}}</b>
+                            </div>
+                            {% endfor %} Your University Identification number should be qouted on the pay-in-slip.
+                        </li>
+                        <li>
+                            The total fee exclude dues you may be required to pay by your Faculty/Departments or Association.
+                        </li>
+                        <li>
+                            Please, note that fees paid are neither refundable or transferable.
+                        </li>
+                        <li>
+                            You are to register at the <strong>{{applicant.admission.type.department}}</strong> under <strong>{{applicant.admission.type.department.faculty}}</strong> During the re-opening of the
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>/
+                            <script>
+                                document.write(new Date().getFullYear() + 1)
+                            </script> Academic Year.
+                        </li>
+                        <li>
+                            A medical examination will be done on you to determine your fitness for the programme when you report.
+                        </li>
+                        <li>
+                            Please, note that, no change of name will be accepted during/after your study in this University.
+                        </li>
+                        <li>
+                            All fresh students will be matriculated soon after the University re-opens. You should take note of the matriculation date. You should note carefully that your admission will be withdrawn if you fail to take part in the matriculation. No excuse will be
+                            accepted if any student fails to comply with this advice/directive.
+                        </li>
+                        <li>
+                            Please, accept our congratulations on your admission to DR. HILLA LIMANN TECHNICAL UNIVERSITY.
+                        </li>
+                        <li>
+                            Every correspondence relating to this offer of admission should be addressed to:
+                        </li>
+                    </ol>
+                    <div>
+                        <div>{{registrar}}</div>
+                        <div>
+                            <img src="{{registrar_sign}}" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    print();
+                    const page_div = document.querySelector('.page-break');
+
+                    page_div.style.display = 'flex';
+                    page_div.style.flexDirection = 'column';
+
+                    const footer_html = document.getElementById('footer-html');
+                    footer_html.classList.add('hidden-pdf');
+                    footer_html.classList.remove('visible-pdf');
+                    footer_html.style.order = 1;
+                    footer_html.style.marginTop = '20px';
+                });
+            </script>
+            {% endblock %}

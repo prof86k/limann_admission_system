@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    login
+{% endblock %}
+
+{% block content %}
+    <div class="container col-md-7 post-form mt-5">
+        <h1 class="display-4 text-center" style="font-size: 30px;">DR. HILLA LIMMAN TECHNICAL UNIVERSITY</h1>
+        <hr class="my-4 bg-danger">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+        {% endfor %}
+        <form action="{{ url_for('auth.admin_login') }}" method="post">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                <div class="container-fluid">
+                    {% if form.username.errors %}
+                        {% for error in form.username.errors %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            <label for="username">{{form.username.label()}}</label>
+            {{form.username(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <label for="password">{{form.password.label()}}</label>
+                {{form.password(class="form-control")}}
+            </div>
+            <div class="form-group mt-4 mb-4">
+                {{form.submit(class="btn btn-block btn-primary")}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

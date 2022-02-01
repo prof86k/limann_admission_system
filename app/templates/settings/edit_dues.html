@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block title %} EDIT {{faculty}} {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary">
+        Back <i class="fas fa-hand-point-left"></i>
+    </a>
+<div class="container col-md-10 post-form">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>EDIT {{faculty}} INFORMATION</h3>
+            <hr class="bg-danger">
+        </div>
+    </div>
+    <form action="{{ url_for('admin_panel.edit_dues',dues_id=dues.id) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.amount.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.username.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="amount">{{form.amount.label()}}</label> {{form.amount(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+{% endblock %}

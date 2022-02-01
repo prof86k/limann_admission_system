@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block title %} settings {% endblock %}
+<!--  -->
+{% block content %}
+<h3 class="text-center">Users and SRC</h3>
+<hr class="bg-danger">
+<div class="row">
+    <div class="col-md-12 mb-2">
+        <div class="card">
+            <H4 class="card-header">
+                Users
+            </H4>
+            <div class="card-body">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('admin_panel.create_user' ) }}">Create User</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('admin_panel.view_and_admin_applicants' ) }}">No. Applied</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('admin_panel.view_all_admitted_students' ) }}">No. Admitted</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<h3 class="text-center mt-md-3"> CARD SETTINGS AND INFORMATION</h3>
+<hr class="bg-danger">
+<div class="row">
+    <div class="col-md-2 col-0"></div>
+    <div class="col-md-8">
+        <div class="card">
+            <h4 class="card-header">
+                CARD SETTINGS
+            </h4>
+            <ul class="card-body">
+                <li>
+                    <a  href="{{ url_for('admin_panel.set_card' ) }}">Set Card State</a>
+                </li>
+                <li>
+                    <a  href="{{ url_for('admin_panel.view_cards' ) }}">View Bought Cards</a>
+
+                </li>
+
+                <li>
+                    <a  href="{{ url_for('auth.buy_card' ) }}">Sell Card</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-2 col-0"></div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="text-center mt-md-3"> ADDITIONAL SETTINGS AND INFORMATION</h3>
+        <hr class="bg-danger">
+        <div class="card mt-2">
+            <h4 class="card-header">
+                Additional SETTINGS
+            </h4>
+            <ul class="card-body">
+                <li>
+                    <a href="{{ url_for('admin_panel.add_sr_dues' ) }}">Add SRC Dues</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_panel.add_bank' ) }}">Add Operated Banks</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_panel.add_registrar' ) }}">Add Registrar</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-2 col-0"></div>
+</div>
+{% endblock %}

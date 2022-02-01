@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    EDIT {{faculty}}
+{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary">
+        Back <i class="fas fa-hand-point-left"></i>
+    </a>
+    <div class="container col-md-10 post-form">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>EDIT {{faculty}} INFORMATION</h3>
+                <hr class="bg-danger">
+            </div>
+        </div>
+        <form action="{{ url_for('admin_panel.edit_factiulty',faculty_id=faculty.id) }}" method="post">
+            <div class="modal-body">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <label for="faculty_name">{{form.faculty_name.label}}</label>
+                    {% for error in form.faculty_name.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.faculty_name(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    <label for="faculty_name">{{form.faculty_code.label}}</label>
+                    {% for error in form.faculty_code.errors %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    {% endfor %}
+                    {{form.faculty_code(class="form-control")}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{form.submit(class="btn btn-success btn-block")}}
+            </div>
+        </form>
+    </div>
+{% endblock %}

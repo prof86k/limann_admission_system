@@ -1,0 +1,49 @@
+{% extends 'layout.html' %} {% block title %} apply {% endblock %} {% block content %}
+
+<div class="container col-md-7 post-form mt-3 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 30px;">DR. HILLA LIMMAN TECHNICAL UNIVERSITY</h1>
+    <hr class="bg-danger">
+    </h1>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> {{message}}
+    </div>
+    {% endfor %} {% endwith %}
+    <form action="{{ url_for('auth.apply') }}" method="post">
+        {{form.hidden_tag()}}
+        <div class="form-group">
+            <div class="container-fluid">
+                {% if form.serial.errors %} {% for error in form.serial.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> {{error}}
+                </div>
+                {% endfor %} {% endif %}
+            </div>
+            <label for="serial">{{form.serial.label()}}</label> {{form.serial(class="form-control")}}
+        </div>
+        <div class="form-group">
+            {% if form.pin.errors %} {% for error in form.pin.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span>
+                                    </button> {{error}}
+            </div>
+            {% endfor %} {% endif %}
+            <label for="serial">{{form.pin.label()}}</label> {{form.pin(class="form-control")}}
+        </div>
+        <div class="form-group mt-4 mb-4">
+            {{form.submit(class="btn btn-block btn-primary")}}
+        </div>
+    </form>
+    <div class="mt-2">
+        <p>Create Account To Apply <span>
+            <a href="{{url_for('auth.buy_card')}}" > Create Account</a>
+        </span></p>
+    </div>
+</div>
+{% endblock %}

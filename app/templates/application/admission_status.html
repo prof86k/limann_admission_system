@@ -1,0 +1,66 @@
+{% extends 'layout.html' %} {% block title %} Your Admission Status {% endblock %} {% block content %} {%if card.applicant.admission.admission_status != 'admitted' %}
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+    <p><strong>{{card.applicant}}</strong> You should check in on some of those fields below.</p>
+    <a href="{{ url_for('application.submit_application_confirmation',card_id=card.pin ) }}" class="btn-sucess">Edit</a>
+</div>
+{% else %}
+<div class="col-md-12 text-center">
+    <h1>{{card.applicant.admission.admission_status|upper}}</h1>
+</div>
+{% endif %} {% if card.applicant.admission.admission_status == 'admitted' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+    <p><strong>Welcome Back {{card.applicant|title}}</strong> Your Admission Was Processed Successfully</p>
+    <p>Kindly proceed to print your admission letter and make your <strong>DREAM A REALITY</strong></p>
+    <p>
+        <em>Thanks For Making A Good Choice</em>
+    </p>
+</div>
+<table class="table table-bordered bg-white table-inverse table-responsive shadow-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Student Name</th>
+            <th>Progamme</th>
+            <th>Duration</th>
+            <th>Admission Status</th>
+            <th>Level</th>
+            <th>Admission Fees</th>
+            <th>Department</th>
+            <th>Print Letter</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{card.applicant}}</td>
+            <td>{{card.applicant.admission.programme_listed}}</td>
+            <td>
+                {% if card.applicant.agreed.admission_type == 'mature_topup' %}
+                {{card.applicant.admission.type.programmes.filter_by(programme_name=card.applicant.admission.programme_listed).first().programme_duration_topup}}
+                {% else %}
+                {{card.applicant.admission.type.programmes.filter_by(programme_name=card.applicant.admission.programme_listed).first().programme_duration_direct}}
+
+                {% endif %}
+            </td>
+            <td>{{card.applicant.admission.admission_status}}</td>
+            <td>{{card.applicant.admission.type}}</td>
+            <td>
+                {{card.applicant.admission.type.programmes.filter_by(programme_name=card.applicant.admission.programme_listed).first().programme_admission_fees}}
+            </td>
+            <td>{{card.applicant.admission.type.department}}</td>
+            <td>
+                <a href="{{ url_for('application.print_admission_letter',card_id=card.applicant.card.pin ) }}" class="btn btn-info">
+                    <i class="fa fa-print" style="font-size: 20px;" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<p>Your Admission is under processing</p>
+{% endif %} {% endblock %}

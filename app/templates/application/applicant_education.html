@@ -1,0 +1,162 @@
+{% extends 'layout.html' %} {% block title %} education info {% endblock %} {% block content %}
+<div class="container post-form col-md-9 post-form mt-5 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 40px;">Education Information</h1>
+    <hr class="my-4"> {% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button> {{message}}
+    </div>
+    {% endfor %} {% endwith %}
+    <form action="#" method="post" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.school_name.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.school_name.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="school_name">{{form.school_name.label()}}</label> {{form.school_name(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.location.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.location.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="location">{{form.location.label()}}</label> {{form.location(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.date_started.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.date_started.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="date_started">{{form.date_started.label()}}</label> {{form.date_started(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.date_completed.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.date_completed.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="date_completed">{{form.date_completed.label()}}</label> {{form.date_completed(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.offered_programme.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.offered_programme.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="offered_programme">{{form.offered_programme.label()}}</label> {{form.offered_programme(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.education_type.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.education_type.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="education_type">{{form.education_type.label()}}</label> {{form.education_type(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6" id="hide">
+                <div class="form-group">
+                    {% if form.graduated_class.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.graduated_class.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="graduated_class">{{form.graduated_class.label()}}</label> {{form.graduated_class(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6" id="hide">
+                <div class="form-group">
+                    {% if form.graduated_gpa.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.graduated_gpa.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="graduated_gpa">{{form.graduated_gpa.label()}}</label> {{form.graduated_gpa(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6" id="hide">
+                <div class="form-group">
+                    {% if form.certificate_file.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.certificate_file.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="certificate_file">{{form.certificate_file.label()}}</label> {{form.certificate_file(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6" id="hide">
+                <div class="form-group">
+                    {% if form.transcript_file.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.transcript_file.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="transcript_file">{{form.transcript_file.label()}}</label> {{form.transcript_file(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6 postgra" id="hide">
+                <div class="form-group">
+                    {% if form.second_graduated_class.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.second_graduated_class.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="second_graduated_class">{{form.second_graduated_class.label()}}</label> {{form.second_graduated_class(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6 postgra" id="hide">
+                <div class="form-group">
+                    {% if form.second_graduated_gpa.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.second_graduated_gpa.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="second_graduated_gpa">{{form.second_graduated_gpa.label()}}</label> {{form.second_graduated_gpa(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6 postgra" id="hide">
+                <div class="form-group">
+                    {% if form.second_certificate_file.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.second_certificate_file.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="second_certificate_file">{{form.second_certificate_file.label()}}</label> {{form.second_certificate_file(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6 postgra" id="hide">
+                <div class="form-group">
+                    {% if form.second_transcript_file.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.second_transcript_file.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="second_transcript_file">{{form.second_graduated_gpa.label()}}</label> {{form.second_transcript_file(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-6 offset-md-3">
+            {{form.submit(class="btn btn-primary btn-block")}}
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

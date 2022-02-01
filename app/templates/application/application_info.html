@@ -1,0 +1,138 @@
+{% extends 'layout.html' %} {% block title %} personal info {% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if applicant %}
+        <a href="{{ url_for('application.dashboard',card_id=applicant.card.pin ) }}" class="btn btn-warning">Back</a> {% endif %}
+    </div>
+    <div class="col-md-6">
+        <!-- <a href="" class="btn btn-warning offset-md-11">Next</a> -->
+    </div>
+</div>
+
+<div class="container post-form col-md-9 post-form mt-2 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 40px;">Personal Information</h1>
+    <hr class="my-4"> {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> {{message}}
+    </div>
+    {% endfor %}
+    <form action="#" method="post" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.surname.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.surname.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="surname">{{form.surname.label()}}</label> {{form.surname(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.last_name.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.last_name.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="last_name">{{form.last_name.label()}}</label> {{form.last_name(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.date_of_birth.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.date_of_birth.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="date_of_birth">{{form.date_of_birth.label()}}</label> {{form.date_of_birth(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.home_region.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.home_region.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="home_region">{{form.home_region.label()}}</label> {{form.home_region(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.marital_status.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.marital_status.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="marital_status">{{form.marital_status.label()}}</label> {{form.marital_status(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.childrens.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.childrens.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="childrens">{{form.childrens.label()}}</label> {{form.childrens(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.employed.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.employed.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="employed">{{form.employed.label()}}</label> {{form.employed()}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.first_name.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.first_name.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="first_name">{{form.first_name.label()}}</label> {{form.first_name(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.gender.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.gender.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="gender">{{form.gender.label()}}</label> {{form.gender(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.home_town.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.home_town.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="home_town">{{form.home_town.label()}}</label> {{form.home_town(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.religion.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.religion.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="religion">{{form.religion.label()}}</label> {{form.religion(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.sponsorship.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.sponsorship.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="sponsorship">{{form.sponsorship.label()}}</label> {{form.sponsorship(class="form-control")}}
+                </div>
+                <div class="form-group">
+                    {% if form.passport_picture.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.passport_picture.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="passport_picture">{{form.passport_picture.label()}}</label> {{form.passport_picture(class="form-control")}}
+                </div>
+                <div class="form-group offset-md-8 mt-4 mb-4">
+                    {{form.submit(class="btn btn-block btn-primary")}}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

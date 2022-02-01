@@ -1,0 +1,89 @@
+{% extends 'layout.html' %} {% block title %} employment information {% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <a href="#" class="btn btn-warning">Back</a>
+    </div>
+    <div class="col-md-6">
+        <a href="" class="btn btn-warning offset-md-11">Next</a>
+    </div>
+</div>
+<div class="container post-form col-md-9 post-form mt-5 mb-5">
+    <h1 class="display-4 text-center" style="font-size: 40px;">Edit Employment Information</h1>
+    <hr class="my-4"> {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+    </div>
+    {% endfor %}
+    <form action="#" method="post">
+        {{form.hidden_tag()}}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.organisation_name.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.organisation_name.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="organisation_name">{{form.organisation_name.label()}}</label> {{form.organisation_name(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.organisation_address.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.organisation_address.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="organisation_address">{{form.organisation_address.label()}}</label> {{form.organisation_address(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.organisation_contact.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.organisation_contact.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="organisation_contact">{{form.organisation_contact.label()}}</label> {{form.organisation_contact(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.position_held.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.position_held.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="position_held">{{form.position_held.label()}}</label> {{form.position_held(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.date_started.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.date_started.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="date_started">{{form.date_started.label()}}</label> {{form.date_started(class="form-control")}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.date_ended.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.date_ended.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="date_ended">{{form.date_ended.label()}}</label> {{form.date_ended(class="form-control")}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-6 offset-md-3 my-3">
+            {{form.submit(class="btn btn-primary btn-block")}}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

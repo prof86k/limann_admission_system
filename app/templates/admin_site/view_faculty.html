@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% block title %} view faculties {% endblock %} {% block content %}
+<div class="container mb-5">
+    <div class="card shadow-sm mb-4">
+        <a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary">
+                Back <i class="fas fa-hand-point-left"></i>
+            </a>
+        <div class="row ">
+
+            <div class="col-md-12 text-center">
+                <h2 class=""> FACULTIES/SCHOOLS</h2>
+                <button type="button" class="btn btn-success btn-block p-2" data-toggle="modal" data-target="#modelId">
+                        Create New Faculty/School
+                    </button>
+                <!-- Modal -->
+                <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Create Faculty/School</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <form action="{{ url_for('admin_panel.admin_dashboard') }}" method="post">
+                                <div class="modal-body">
+                                    {{form.hidden_tag()}}
+                                    <div class="form-group">
+                                        <label for="faculty_name">{{form.faculty_name.label}}</label> {% for error in form.faculty_name.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.faculty_name(class="form-control")}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="faculty_name">{{form.faculty_code.label}}</label> {% for error in form.faculty_code.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.faculty_code(class="form-control")}}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{form.submit(class="btn btn-success")}}
+                                        </div>
+                            </form>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Button trigger modal -->
+
+                </div>
+                <hr class="my-3">
+            </div>
+            <!-- The body content here -->
+            <div class="container-fluid ">
+                <!-- administrator level information -->
+                {% for faculty in faculties %}
+                <div class="card mb-3">
+                    <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                        <a id="deleteItem" href="" class="btn btn-danger mr-1">Delete Faculty
+                            <i class="fas fa-trash-alt"></i>
+                            <input type="hidden" id="delete-faculty" value="{{faculty.id}}">
+                        </a>
+                        <a href="{{ url_for('admin_panel.edit_factiulty',faculty_id = faculty.id ) }}" class="btn btn-info mr-1">Edit Faculty
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{{ url_for('admin_panel.create_department',faculty_id = faculty.id ) }}" class="btn btn-primary mr-1">Add Department
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <h4 class="card-title">{{faculty}}</h4>
+                        <p class="card-text">{{faculty.faculty_code}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+            var deleteItems = document.querySelectorAll('#deleteItem');
+            var facultyIds = document.querySelectorAll('#delete-faculty');
+            for (const key in deleteItems) {
+                if (Object.hasOwnProperty.call(deleteItems, key)) {
+                    const element = deleteItems[key];
+                    element.addEventListener('click', function() {
+                        let result = confirm('Erase This Faculty Record? Departments and Programmes will be erased!!.')
+                        if (result == true) {
+                            element.href = '/admin/delete-faculty/' + facultyIds[key].value;
+                        }
+                    });
+                }
+            }
+        </script>
+        {% endblock %}

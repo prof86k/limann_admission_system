@@ -1,0 +1,159 @@
+{% extends 'base.html' %} {% block title %} view level programme {% endblock %} {% block content %}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+            <h1 class="text-center" style="font-size: 25px;">{{run_type.department}}</h1>
+        </div>
+        <h2 class="offset-md-6" style="font-size: 27px;">Add {{run_type}} Programme<span class="display-4 text-success" data-toggle="modal" data-target="#modelId" style="font-size:30px;cursor:pointer">
+                +
+                </span></h2>
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Programme</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                    </div>
+                    <form action="{{ url_for('admin_panel.create_level_programme',level_id=run_type.id) }}" method="post">
+                        <div class="modal-body">
+                            {{form.hidden_tag()}}
+                            <div class="form-group">
+                                <label for="department_name">{{form.programme_name.label}}</label> {% for error in form.programme_name.errors %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> {{error}} {% endfor %} {{form.programme_name(class="form-control")}}
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="programme_duration_direct">{{form.programme_duration_direct.label}}</label> 
+                                        {% for error in form.programme_duration_direct.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.programme_duration_direct(class="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="programme_duration_topup">{{form.programme_duration_topup.label}}</label> {% for error in form.programme_duration_topup.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.programme_duration_topup(class="form-control")}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="department_name">{{form.cut_off_point.label}}</label> {% for error in form.cut_off_point.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.cut_off_point(class="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="min_class">{{form.min_class.label}}</label> {% for error in form.min_class.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.min_class(class="form-control")}}
+                                        </div>
+                                    </div>
+                                </div>
+                                        <div class="form-group">
+                                            <label for="programme_admission_fees">{{form.programme_admission_fees.label}}</label> {% for error in form.programme_admission_fees.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> {{error}} {% endfor %} {{form.programme_admission_fees(class="form-control")}}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="department_name">{{form.is_avaliable.label}}</label> {% for error in form.is_avaliable.errors %}
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> {{error}} {% endfor %} {{form.is_avaliable()}}
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                {{form.submit(class="btn btn-success")}}
+                                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="bg-danger">
+    <h3 class="text-center mt-2" sytle="font-size:30px">{{run_type}} PROGRAMMES</h3>
+    <table class="table table-hover table-inverse table-responsive bg-white">
+        <thead class="thead-inverse shadow-sm">
+            <tr>
+                <th class="col-md-1">Action</th>
+                <th class="col-md-1">No.</th>
+                <th class="col-md-2">Programme</th>
+                <th class="col-md-2">Cutoff Grade</th>
+                <th class="col-md-2">Minimum Class</th>
+                <th class="col-md-2">Admission Fee</th>
+                <th class="col-md-2">Active</th>
+                <th class="col-md-2">Date Created</th>
+                <th class="col-md-2">Other Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for programme in run_type.programmes.all() %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_undegrad_programme',undegrad_programme_id=programme.id ) }}" class="btn btn-info btn-sm mb-1 ">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#" id="programmeItem" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i>
+                        <input type="hidden" id="programmeId" value="{{programme.id}}">
+                    </a>
+                </td>
+                <td>{{loop.index}}</td>
+                <td>{{programme}}</td>
+                <td>{{programme.cut_off_point}}</td>
+                <td>{{programme.min_class}}</td>
+                <td>{{programme.programme_admission_fees}}</td>
+                <td>{{programme.is_avaliable}}</td>
+                <td>{{programme.date_created}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.load_require_subjects',programme_id=programme.id ) }}" class="btn btn-primary ">
+                Add <i class="fas fa-plus"></i>
+            </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var levelItems = document.querySelectorAll('#programmeItem');
+    var levelIds = document.querySelectorAll('#programmeId');
+    var url = '/admin/delete-programme/';
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Erase Record?');
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                })
+            }
+        }
+    }
+    deleteItem(levelItems, levelIds, url)
+</script>
+{% endblock %}

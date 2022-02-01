@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% block title %} view levels {% endblock %} {% block content %}
+<h2 class="text-center" style="font-size:25px">Graduate Level Information</h2>
+<hr class="my-4"> {% for department in departments %}
+<h3 class="text-center mb-3" style="font-size:20px">{{department}}
+    <span style="cursor: pointer; width:20px;height: 2px;">
+            <a style="color:rgb(51, 122, 255);background-color:rgb(255, 255, 255);border-radius: 50%;text-decoration:none; "
+             href="{{ url_for('admin_panel.create_level',department_id=department.id ) }}">+</a> </span>
+</h3>
+<hr>
+{% if department.types.all() %}
+<table class="table table-hover  table-responsive bg-white">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-2">Action</th>
+            <th class="col-md-2">Level</th>
+            <th class="col-md-2">Avaliable</th>
+            <th class="col-md-2">Date Started</th>
+            <th class="col-md-2">Programmes </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for level in department.types.all() %}
+        <tr>
+            <td scope="row">
+                <a href="{{ url_for('admin_panel.edit_level',level_id=level.id ) }}" class="btn btn-info btn-sm mb-1">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="#" id="level-items" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i>
+                    <input type="hidden" id="level-ids" value="{{level.id}}">
+                </a>
+            </td>
+            <td>{{level}}</td>
+            <td>{{level.is_avaliable}}</td>
+            <td>{{level.date_created}}</td>
+            <td>
+                <a href="{{ url_for('admin_panel.create_level_programme',level_id=level.id ) }}" class="btn btn-primary">Add
+                                        <i class="fas fa-plus"></i></a>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{%else%}
+<div class="col-md-12">
+    <div class="card border-0">
+        <div class="card-body text-danger text-center shadow-lg ">
+            <h3 class="card-title"> No Programme Under this level</h3>
+            <p class="card-text text-info">Click on the PLUS sign on top to add Level.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+<script>
+    var levels = document.querySelectorAll('#level-items');
+    var levelIds = document.querySelectorAll('#level-ids');
+    var url = '/admin/delete-level/'
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Erase Record?');
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                })
+            }
+        }
+    }
+    deleteItem(levels, levelIds, url);
+</script>
+{% endblock %}

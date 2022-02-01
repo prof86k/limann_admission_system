@@ -1,0 +1,102 @@
+{% extends 'base.html' %} {% block title %} add require subjects {% endblock %} {% block content %}
+        <div class="card" style="border-radius: 13px 13px 0 0;">
+            <div class="shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+                <h1 class="text-center" style="font-size:18px">{{programme.type}}</h1>
+            </div>
+            <h4>{{programme}}
+                <h4>
+                    <span class="text-success offset-md-8 mt-0" data-toggle="modal" data-target="#modelId" style="cursor:pointer">
+                    Add Require Subjects  +
+                    </span>
+                    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Subject</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                                </div>
+                                <form action="{{ url_for('admin_panel.load_require_subjects',programme_id=programme.id ) }}" method="post">
+                                    <div class="modal-body">
+                                        {{form.hidden_tag()}}
+                                        <div class="form-group">
+                                            <label for="subject_name">{{form.subject_name.label}}</label> {% for error in form.subject_name.errors %}
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button> {{error}} {% endfor %} {{form.subject_name(class="form-control")}}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{form.submit(class="btn btn-success")}}
+                                        </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<h3 class="text-center mt-2" style="font-size: 18px;">{{programme}} PROGRAMMES</h3>
+<table class="table table-hover  table-responsive bg-white">
+    <thead class="thead-inverse shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+        <tr>
+            <th class="col-md-2">No.</th>
+            <th class="col-md-2">Subject/Programme Title</th>
+            <th class="col-md-2">Minimum Grade/GPA</th>
+            <th class="col-md-2">Status</th>
+            <th class="col-md-2">Date Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in programme.subjects %}
+        <tr>
+            <td scope="row">{{loop.index}}</td>
+            <td>{{subject}}</td>
+            <td>{{subject.min_grade}}</td>
+            <td>{{subject.subject_status}}</td>
+            <td>{{subject.date_created}}
+                <input type="hidden" id="programme-id" value="{{programme.id}}">
+                <input type="hidden" id="subject-id" value="{{subject.id}}">
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <script>
+        let programme = document.querySelectorAll('#programme-id');
+        let subject = document.querySelectorAll('#subject-id');
+        let remove = document.querySelectorAll('.remove-subject');
+        for (const key in remove) {
+            if (Object.hasOwnProperty.call(remove, key)) {
+                const element = remove[key];
+                element.addEventListener('click', function() {
+                    let serverData = {
+                        'programmeId': programme[key].value,
+                        'subjectId': subject[key].value,
+                    };
+                    // URL =`${"{{request.url}}"}`;
+                    // URL = '';
+
+                    URL = `${"{{url_for('admin_panel.remove_require_subject')}}"}`
+                    console.log(URL)
+                        // console.log(serverData);
+                    data_state = {
+                        method: "POST",
+                        headers: {
+                            'content-type': "application/json",
+                        },
+                        body: JSON.stringify(serverData),
+                    };
+                    // console.log(data_state)
+                    fetch(URL, data_state)
+                        // .then(response=>response.json())
+                        // .then((data)=>console.log('submited'))
+                        .catch((err) => console.log(err));
+                    fetch(`${"{{url_for('admin_panel.load_require_subjects',programme_id=programme.id)}}"}`, {
+                        method: 'GET'
+                    })
+                });
+            }
+        }
+    </script>
+    {% endblock %}

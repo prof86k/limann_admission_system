@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block title %} edit level/{{level}} {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_departments' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class=" container post-form">
+    <h3>Edit {{level}} in {{level.department}} Information</h3>
+    <hr class="bg-danger">
+    <form action="{{ url_for('admin_panel.edit_level',level_id=level.id) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.appliction_type.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.appliction_type.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="appliction_type">{{form.appliction_type.label()}}</label> {{form.appliction_type(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.is_avaliable.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.is_avaliable.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="is_avaliable">{{form.is_avaliable.label()}}</label> {{form.is_avaliable()}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary btn-block")}}
+        </div>
+    </form>
+</div>
+{% endblock %}

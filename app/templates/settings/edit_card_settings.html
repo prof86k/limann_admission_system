@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block title %} Set Cards {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.admin_dashboard' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="container col-md-10 post-form">
+    <h3>Edit {{Card}} Information</h3>
+    <hr class="bg-danger">
+    <form action="{{ url_for('admin_panel.edit_card_settings',card_id=card.id ) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.state.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.state.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="card_state">{{form.state.label()}}</label> {{form.state(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.card_type.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.card_type.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="card_type">{{form.card_type.label()}}</label> {{form.card_type(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.amount.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.amount.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="amount">{{form.amount.label()}}</label> {{form.amount(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary btn-block")}}
+        </div>
+    </form>
+</div>
+{% endblock %}

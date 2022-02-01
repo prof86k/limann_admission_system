@@ -1,0 +1,135 @@
+{% extends 'base.html' %} {% block title %} Set Cards {% endblock %} {% block content %}
+
+<a href="{{ url_for('admin_panel.add_settings' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="card shadow-sm mb-3" style="border-radius: 13px  13px 0 0;">
+    <div class="row" style="display: flex; align-items: baseline; justify-content: space-around;">
+        <h4>SET CARDS STATE</h4>
+        <span>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modelId">
+            Set Card
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Card Info</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="{{ url_for('admin_panel.set_card') }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.state.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.state.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="card_state">{{form.state.label()}}</label> {{form.state(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.card_type.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.card_type.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="card_type">{{form.card_type.label()}}</label> {{form.card_type(class="form-control")}}
+            </div>
+            <div class="form-group ">
+                {% if form.amount.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.amount.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="amount">{{form.amount.label()}}</label> {{form.amount(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</span>
+</div>
+<hr class="my-4">
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+</div>
+{% endfor %} {% endwith %}
+<div class="row">
+    <table class="table table-hover table-inverse table-responsive col-md-12 bg-white">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-2">No.</th>
+                <th class="col-md-2">Card Type</th>
+                <th class="col-md-2">Application Fees</th>
+                <th class="col-md-2">Date Started</th>
+                <th class="col-md-2">Card State</th>
+                <th class="col-md-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %} {% if card %}
+            <tr>
+                <td scope="row">{{loop.index}}</td>
+                <td><b>{{card|upper}}</b></td>
+                <td>{{card.amount}}</td>
+                <td>{{card.date_created}}</td>
+                <td>{{card.state}}</td>
+                <td>
+                    <a href="{{ url_for('admin_panel.edit_card_settings',card_id=card.id ) }}" class="btn btn-info btn-sm mb-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="" id="delete-card" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                        <input type="hidden" id="item-id" value="{{card.id}}">
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <p>No Information About Cards yet</p>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var deleteItems = document.querySelectorAll('#delete-card');
+    let itemIds = document.querySelectorAll('#item-id');
+    var state = document.querySelector('#state');
+    var amount = document.querySelector('#amount');
+    state.addEventListener('change', function() {
+        if (this.value == 'free') {
+            amount.value = 0.0
+            amount.classList.add('amount')
+        } else {
+            amount.value = ''
+        }
+    });
+
+    for (const key in deleteItems) {
+        if (Object.hasOwnProperty.call(deleteItems, key)) {
+            const element = deleteItems[key];
+            element.addEventListener('click', function() {
+                let result = confirm('This Action Will Erase Record Contiue?');
+                if (result == true) {
+                    element.href = '/admin/delete-card/settings/' + itemIds[key].value
+                } else {
+                    console.log('operation denied');
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

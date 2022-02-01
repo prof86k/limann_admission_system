@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block title %} EDIT {{subject}} {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary">
+        Back <i class="fas fa-hand-point-left"></i>
+    </a>
+<div class="container col-md-10 post-form">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>EDIT {{subject}} INFORMATION</h3>
+            <hr class="bg-danger">
+        </div>
+    </div>
+    <form action="{{ url_for('admin_panel.edit_subjects_4',subject_id=subject.id) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.subject_name.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.username.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="subject_name">{{form.subject_name.label()}}</label> {{form.username(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.subject_status.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.email.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="subject_status">{{form.subject_status.label()}}</label> {{form.email(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.min_grade.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.password.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="min_grade">{{form.min_grade.label()}}</label> {{form.password(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+
+</div>
+{% endblock %}

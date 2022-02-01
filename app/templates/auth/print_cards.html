@@ -1,0 +1,265 @@
+{% extends 'layout.html' %} {% block title %} print Card {% endblock %} {% block content %}
+<link type="text/css" rel="stylesheet">
+<style>
+    @media screen {
+        .print-format-gutter {
+            background-color: #d1d8dd;
+            padding: 30px 0px;
+        }
+        .print-format {
+            background-color: white;
+            box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+            max-width: 8.3in;
+            min-height: 1in;
+            padding: 0.75in;
+            margin: auto;
+        }
+        .print-format.landscape {
+            max-width: 11.69in;
+            padding: 0.2in;
+        }
+        .page-break {
+            padding: 30px 0px;
+            border-bottom: 1px dashed #888;
+        }
+        .page-break:first-child {
+            padding-top: 0px;
+        }
+        .page-break:last-child {
+            border-bottom: 0px;
+        }
+        /* mozilla hack for images in table */
+        body:last-child .print-format td img {
+            width: 100% !important;
+        }
+        @media(max-width: 767px) {
+            .print-format {
+                padding: 0.2in;
+            }
+        }
+    }
+    
+    @media print {
+        .print-format p {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+    }
+    
+    .disabled-check {
+        color: #eee;
+    }
+    
+    .data-field {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .data-field .value {
+        word-wrap: break-word;
+    }
+    
+    .important .value {
+        font-size: 120%;
+        font-weight: bold;
+    }
+    
+    .important label {
+        line-height: 1.8;
+        margin: 0px;
+    }
+    
+    .table {
+        margin: 20px 0px;
+    }
+    
+    .square-image {
+        width: 100%;
+        height: 0;
+        padding: 50% 0;
+        background-size: contain;
+        /*background-size: cover;*/
+        background-repeat: no-repeat !important;
+        background-position: center center;
+        border-radius: 4px;
+    }
+    
+    .print-item-image {
+        object-fit: contain;
+    }
+    
+    .pdf-variables,
+    .pdf-variable,
+    .visible-pdf {
+        display: none !important;
+    }
+    
+    .print-format {
+        font-size: 18px;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Open Sans", sans-serif;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .page-break {
+        page-break-after: always;
+    }
+    
+    .print-heading {
+        border-bottom: 1px solid #aaa;
+        margin-bottom: 10px;
+    }
+    
+    .print-heading h2 {
+        margin: 0px;
+    }
+    
+    .print-heading h4 {
+        margin-top: 5px;
+    }
+    
+    table.no-border,
+    table.no-border td {
+        border: 0px;
+    }
+    
+    .print-format label {
+        /* wkhtmltopdf breaks label into multiple lines when it is inline-block */
+        display: block;
+    }
+    
+    .print-format img {
+        max-width: 100%;
+    }
+    
+    .print-format table td>.primary:first-child {
+        font-weight: bold;
+    }
+    
+    .print-format td,
+    .print-format th {
+        vertical-align: top !important;
+        padding: 6px !important;
+    }
+    
+    .print-format p {
+        margin: 3px 0px 3px;
+    }
+    
+    .print-format table td pre {
+        white-space: normal;
+        word-break: normal;
+    }
+    
+    table td div {
+        /* needed to avoid partial cutting of text between page break in wkhtmltopdf */
+        page-break-inside: avoid !important;
+    }
+    /* hack for webkit specific browser */
+    
+    @media (-webkit-min-device-pixel-ratio:0) {
+        thead,
+        tfoot {
+            display: table-header-group;
+        }
+    }
+    
+    [document-status] {
+        margin-bottom: 5mm;
+    }
+    
+    .signature-img {
+        background: #fff;
+        border-radius: 3px;
+        margin-top: 5px;
+        max-height: 150px;
+    }
+    
+    .print-preview [data-fieldtype="Table"] {
+        overflow: auto;
+    }
+    
+    .print-heading {
+        text-align: right;
+        text-transform: uppercase;
+        color: #666;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #d1d8dd;
+    }
+    
+    .print-heading h2 {
+        font-size: 24px;
+    }
+    
+    .print-format th {
+        background-color: #eeeeee !important;
+        border-bottom: 0px !important;
+    }
+    
+    tr .applicant {
+        background-color: #fff !important;
+        border-bottom: 0px !important;
+    }
+    /* modern format: for-test */
+</style>
+<!--  -->
+<div class="print-format-gutter">
+    <div class="print-format">
+        <div class="page-break">
+            <div>
+                <div class="letter-head">
+                    <img src="{{ url_for('static',filename='images/me1.png' ) }}" style="width: 100%;">
+                </div>
+                <div class="print-heading">
+
+                </div>
+                <div id="card">
+                    <table>
+                        <tr>
+                            <th>Name:</th>
+                            <td>: <b>{{name}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Serial Number</th>
+                            <td>: <b>{{card}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Pin</th>
+                            <td>: <b>{{pin}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Amount Paid</th>
+                            <td>: <b>{{amount}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>: <b>{{mode}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Type of Application</th>
+                            <td>: <b>{{types}}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Seller Name</th>
+                            <td>:<b>{{sellername}}</b></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    print();
+                    const page_div = document.querySelector('.page-break');
+                    // // 
+                    page_div.style.display = 'flex';
+                    page_div.style.flexDirection = 'column';
+                    // // 
+                    const footer_html = document.getElementById('footer-html');
+                    footer_html.classList.add('hidden-pdf');
+                    footer_html.classList.remove('visible-pdf');
+                    footer_html.style.order = 1;
+                    footer_html.style.marginTop = '20px';
+                });
+            </script>
+            {% endblock %}

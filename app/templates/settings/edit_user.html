@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    edit {{user.username}}
+{% endblock %}
+
+{% block content %}
+
+<a href="{{ url_for('admin_panel.create_user' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="container col-md-8 post-form">
+    <h3>Change {{user.username}} Password</h3>
+    <hr class="bg-danger">
+    <form action="{{ url_for('admin_panel.edit_user_info',user_id=user.id) }}" method="post">
+        <div class="modal-body">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {% if form.username.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% for error in form.username.errors %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            <label for="username">{{form.username.label()}}</label>
+            {{form.username(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.email.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% for error in form.email.errors %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <label for="email">{{form.email.label()}}</label>
+                {{form.email(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {% if form.password.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% for error in form.password.errors %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <label for="password">{{form.password.label()}}</label>
+                {{form.password(class="form-control")}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{form.submit(class="btn btn-primary")}}                                
+        </div>
+    </form>
+</div>
+{% endblock %}

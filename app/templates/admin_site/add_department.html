@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% block title %} {{faculty}} / departments {% endblock %} {% block content %}
+<a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary mb-4">
+    Back <i class="fas fa-hand-point-left"></i>
+</a>
+<div class="col-md-12">
+    <h1>{{faculty}}</h1>
+</div>
+<button type="button" class="btn btn-success btn-block p-2 mb-3" data-toggle="modal" data-target="#modelId">
+    Create New Department
+</button>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Department</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <form action="{{ url_for('admin_panel.create_department',faculty_id=faculty.id) }}" method="post">
+                <div class="modal-body">
+                    {{form.hidden_tag()}}
+                    <div class="form-group">
+                        <label for="department_name">{{form.department_name.label}}</label> {% for error in form.department_name.errors %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> {{error}} {% endfor %} {{form.department_name(class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{form.submit(class="btn btn-success")}}
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover table-inverse table-responsive bg-white">
+                <thead class="thead-inverse shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+                    <tr>
+                        <th class="col-md-2">Action</th>
+                        <th class="col-md-2">No.</th>
+                        <th class="col-md-2">Department</th>
+                        <th class="col-md-2">Date Created</th>
+                        <th class="col-md-2">Add Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in faculty.departments %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('admin_panel.edit_department',department_id=department.id ) }}" class="btn btn-primary mb-1">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" id="departments" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                                <input type="hidden" id="departmentid" value="{{department.id}}">
+                            </a>
+                        </td>
+                        <td scope="row">{{loop.index}}</td>
+                        <td>{{department}}</td>
+                        <td>{{department.date_created}}</td>
+                        <td>
+                            <a href="{{ url_for('admin_panel.create_level',department_id=department.id ) }}" class="btn btn-info">Add Level
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var levelItems = document.querySelectorAll('#departments');
+        var levelIds = document.querySelectorAll('#departmentid');
+        var url = '/admin/delete-department/';
+
+        function deleteItem(deleteItems, itemIds, url) {
+            for (const key in deleteItems) {
+                if (Object.hasOwnProperty.call(deleteItems, key)) {
+                    const element = deleteItems[key];
+                    element.addEventListener('click', function() {
+                        let result = confirm('Erase Record?');
+                        if (result == true) {
+                            element.href = url + itemIds[key].value;
+                        }
+                    });
+                }
+            }
+        }
+        deleteItem(levelItems, levelIds, url)
+    </script>
+    {% endblock %}

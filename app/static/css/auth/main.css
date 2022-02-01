@@ -1,0 +1,15 @@
+.post-form {
+    background: linear-gradient(to right bottom, rgb(255, 255, 255), rgb(255, 255, 255));
+    border-radius: 12px;
+    backdrop-filter: blur;
+    padding-bottom: 25px;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+}
+
+.post-nav {
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+}
+
+.amount {
+    cursor: not-allowed;
+}

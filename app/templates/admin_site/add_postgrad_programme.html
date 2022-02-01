@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    view level programme
+{% endblock %}
+
+{% block content %}
+    <div class="row mb-2">
+        <a href="{{ url_for('admin_panel.view_faculty' ) }}" class="btn btn-secondary mb-4">
+            Back <i class="fas fa-hand-point-left"></i>
+        </a>
+        <div class="col-md-12">
+            <div class="card" style="border-radius: 13px 13px 0 0;">
+                <div class="shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+                    <h1 class="text-center" style="font-size: 30px;">{{run_type.department}}</h1> 
+                </div>
+                <h2 class="offset-md-6">Add {{run_type}} Programme<span class="display-4 text-success" data-toggle="modal" data-target="#modelId" style="cursor:pointer">
+                    +
+                    </span></h2>
+                    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Programme</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form action="{{ url_for('admin_panel.create_postgrad_level_programme',level_id=run_type.id) }}" method="post">
+                                <div class="modal-body">
+                                    {{form.hidden_tag()}}
+                                    <div class="form-group">
+                                        <label for="programme_title">{{form.programme_title.label}}</label>
+                                        {% for error in form.programme_title.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            {{error}}
+                                        {% endfor %}
+                                        {{form.programme_title(class="form-control")}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="programme_duration">{{form.programme_duration.label}}</label>
+                                        {% for error in form.programme_duration.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            {{error}}
+                                        {% endfor %}
+                                        {{form.programme_duration(class="form-control")}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min_gpa">{{form.min_gpa.label}}</label>
+                                        {% for error in form.min_gpa.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            {{error}}
+                                        {% endfor %}
+                                        {{form.min_gpa(class="form-control")}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="programme_admission_fees">{{form.programme_admission_fees.label}}</label>
+                                        {% for error in form.programme_admission_fees.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            {{error}}
+                                        {% endfor %}
+                                        {{form.programme_admission_fees(class="form-control")}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="active">{{form.active.label}}</label>
+                                        {% for error in form.active.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            {{error}}
+                                        {% endfor %}
+                                        {{form.active()}}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {{form.submit(class="btn btn-success")}}
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                
+            </div>
+        </div>
+    </div>
+    <h3 class="text-center mt-4" sytle="font-size:30px">{{run_type}} PROGRAMMES</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover table-inverse table-responsive bg-white">
+                <thead class="thead-inverse shadow-sm" style="border-bottom: 1px solid #e5f0f6;">
+                    <tr>
+                        <th class="col-md-2">Action</th>
+                        <th class="col-md-2">Programme</th>
+                        <th class="col-md-2">Min GPA</th>
+                        <th class="col-md-2">Admission Fee</th>
+                        <th class="col-md-2">Status</th>
+                        <th class="col-md-2">Date Created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for programme in run_type.postgrad_programmes.all() %}
+                            <tr>
+                                <td scope="row">
+                                    <a href="{{ url_for('admin_panel.delete_postgrad_programme',programme_id=programme.id) }}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="{{ url_for('admin_panel.edit_postgrad_programme',postgrad_programme_id=programme.id ) }}" class="btn btn-info btn-sm mb-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>{{programme}}</td>
+                                <td>{{programme.min_gpa}}</td>
+                                <td>{{programme.programme_admission_fees}}</td>
+                                <td>{{programme.active}}</td>
+                                <td>{{programme.date_created}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

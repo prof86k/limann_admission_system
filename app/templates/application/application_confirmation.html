@@ -1,0 +1,93 @@
+{% extends 'layout.html' %} {% block title %}confirm application{% endblock %} {% block content %}
+<div class="container post-form post-form mb-5">
+    {% if applicant.agreed %}
+    <h1>Hello {{applicant}}, </h1>
+    <p>You have to confirm your application and wait for admission board to take action, we will get back you when they are <b>Done.</b>
+    </p>
+    {% else %}
+    <h1 class="display-4 text-center" style="font-size: 40px;">Confirm and Submit Application.</h1>
+    {% endif %}
+    <hr class="my-4"> {% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {{message}}
+    </div>
+    {% endfor %} {% endwith %}
+    <div style="display: flex; align-items: baseline; justify-content: space-between;">
+        {% if applicant.agreed.agreed==True %}
+        <a href="{{ url_for('application.print_application_letter',card_id=applicant.card.pin ) }}" class="btn btn-secondary">Print Application Letter</a>
+        <!--  -->
+        {% else %}
+        <!--  -->
+        <a href="{{ url_for('application.dashboard',card_id=applicant.card.pin ) }}" class="btn btn-primary">Edit Information</a> {% if (applicant and applicant.choice) or (applicant and applicant.postgradchoice)%}
+        <a href="{{ url_for('application.print_application_letter',card_id=applicant.card.pin ) }}" class="btn btn-secondary">Preview Application Details</a> {%endif%} {% endif %}
+    </div>
+
+</div>
+<div class="row">
+    {% if applicant.choice %}
+    <div class="col-md-12 post-form">
+        {% if not applicant.agreed%}
+        <form action="#" method="post">
+            {{form.hidden_tag()}}
+            {% if applicant.card.buy.application_type == 'MATURE' %}
+            <div class="form-group">
+                {% if form.admission_type.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.admission_type.errors %} {{error}} {% endfor %}
+                </div>
+                {% endif %}
+                <label for="admission_type">{{form.admission_type.label}}</label> {{form.admission_type(class="form-control")}}
+            </div>
+            {% endif %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% if form.agreed.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.agreed.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="agreed">{{form.agreed.label()}}</label> {{form.agreed()}}
+                </div>
+                <label>I acknowledge that all the information given are true and devoid of any errors and I will be held liable or face the consequences of process</label>
+
+            </div>
+            <div class="col-md-6">
+                {{form.submit()}}
+            </div>
+        </form>
+        {% elif applicant.choice and applicant.agreed.agreed==False %}
+        <h3>Edit Confirmation</h3>
+        <form action="{{url_for('application.edit_personel_confirm',card_id=applicant.card.pin)}}" method="post">
+            {{form.hidden_tag()}}
+            <div class="col-md-6">
+                {% if applicant.card.buy.application_type == 'MATURE' %}
+                <div class="form-group">
+                    {% if form.admission_type.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.admission_type.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="admission_type">{{form.admission_type.label}}</label> {{form.admission_type(class="form-control")}}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    {% if form.agreed.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {% for error in form.agreed.errors %} {{error}} {% endfor %}
+                    </div>
+                    {% endif %}
+                    <label for="agreed">{{form.agreed.label()}}</label> {{form.agreed()}}
+                    <label>I acknowledge that all the information given are true and devoid of any errors and I will be held liable or face the consequences of process</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                {{form.submit()}}
+            </div>
+            {%endif%}
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block title %} Dashboard {% endblock %}
+<!--  -->
+{% block content %}
+<div class="card shadow-sm">
+    <div class="row">
+        <div class="col-md-6 mt-3">
+            <a href="{{ url_for('admin_panel.create_subject' ) }}" class="btn btn-primary">Load Admissions Required Subjects
+                    </a>
+        </div>
+        <div class="col-md-6 mt-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-block p-2" data-toggle="modal" data-target="#modelId">
+                        Create New Faculty/School
+                    </button>
+            <!-- Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Faculty/School</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ url_for('admin_panel.admin_dashboard') }}" method="post">
+                            <div class="modal-body">
+                                {{form.hidden_tag()}}
+                                <div class="form-group">
+                                    <label for="faculty_name">{{form.faculty_name.label}}</label> {% for error in form.faculty_name.errors %}
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.faculty_name(class="form-control")}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faculty_name">{{form.faculty_code.label}}</label> {% for error in form.faculty_code.errors %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> {{error}} {% endfor %} {{form.faculty_code(class="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        {{form.submit(class="btn btn-success")}}
+                                    </div>
+                        </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+        </div>
+        <!-- The body content here -->
+        <div class="container-fluid">
+            <h3 class="text-center">Administrator level Information</h3>
+            <hr class="my-3 bg-danger">
+            <div class="row mb-4">
+                <!-- administrator level information -->
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Faculties/Schools</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fas fa-warehouse-alt" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_faculty') }}">
+                                <button type="button" class="btn btn-primary btn-block position-relative text-right">
+                            
+                                Faculties/Schools
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  {{faculty_number}}
+                                </span>
+                            
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Departments</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fas fa-warehouse" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_departments') }}">
+                                <button type="button" class="btn btn-primary btn-block position-relative text-right">
+                                
+                                    View Departments
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                      {{departments_number}}
+                                    </span>
+
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Levels</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fad fa-users-class" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_runned_levels' ) }}">
+                                <button type="button" class="btn btn-primary btn-block position-relative text-right">
+
+                                View Graduate Levels
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  {{types}}
+                                </span>
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Programmes</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fas fa-laptop-medical" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_level_programmes' ) }}">
+                                <button type="button" class="btn btn-primary btn-block position-relative text-right">
+                                View Programmes
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  {{programmes}}
+                                </span>
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- applicant level information -->
+            <h2 class="text-center">Applicant Level Information</h2>
+            <hr class="my-3 bg-danger">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Purchased Cards</h4>
+                        </div>
+                        <div class="card-body">
+                            <i class="far fa-credit-card" style="font-size: 50px;"></i>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_cards' ) }}">
+                                <button type="button" class="btn btn-primary position-relative">
+                                
+                                    View Purchased Cards
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                      {{cards}}
+                                    </span>
+                                
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>No. of Applied</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fas fa-user-plus" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_and_admin_applicants' ) }}">
+                                <button type="button" class="btn btn-primary">
+                            No. of Direct Applied<span class="badge bg-danger">{{direct_applicants}}</span>
+                          </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>No. of Applied</h4>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fas fa-user-plus" style="font-size: 50px;"></i>
+                            </h4>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_admit_mature_applicants' ) }}">
+                                <button type="button" class="btn btn-primary">
+                            No. of Mature Applied<span class="badge bg-danger">{{mature_applicants}}</span>
+                          </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-0 shadow-sm mb-2">
+                        <div class="card-header">
+                            <h4>Admitted</h4>
+                        </div>
+                        <div class="card-body">
+                            <i class="fas fa-user-graduate" style="font-size: 50px;"></i>
+                        </div>
+                        <div class="card-footer text-muted p-0">
+                            <a href="{{ url_for('admin_panel.view_all_admitted_students' ) }}">
+                                <button type="button" class="btn btn-primary">
+                                        View Admitted Students<span class="badge bg-danger">{{admitted_number}}</span>
+                                    </button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endblock %}

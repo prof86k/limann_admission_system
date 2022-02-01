@@ -1,0 +1,589 @@
+{% extends 'layout.html' %} {% block title %} application letter {% endblock %} {% block content %}
+<link type="text/css" rel="stylesheet">
+<style>
+    @media screen {
+        .print-format-gutter {
+            background-color: #d1d8dd;
+            padding: 30px 0px;
+        }
+        .print-format {
+            background-color: white;
+            box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+            max-width: 11in;
+            min-height: 11in;
+            padding: 0.70in;
+            margin: auto;
+        }
+        .print-format.landscape {
+            max-width: 11.69in;
+            padding: 0.2in;
+        }
+        .page-break {
+            padding: 30px 0px;
+            border-bottom: 1px dashed #888;
+        }
+        .page-break:first-child {
+            padding-top: 0px;
+        }
+        .page-break:last-child {
+            border-bottom: 0px;
+        }
+        /* mozilla hack for images in table */
+        body:last-child .print-format td img {
+            width: 100% !important;
+        }
+        @media(max-width: 767px) {
+            .print-format {
+                padding: 0.17in;
+            }
+        }
+    }
+    
+    @media print {
+        .print-format p {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+    }
+    
+    .disabled-check {
+        color: #eee;
+    }
+    
+    .data-field {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .data-field .value {
+        word-wrap: break-word;
+    }
+    
+    .important .value {
+        font-size: 120%;
+        font-weight: bold;
+    }
+    
+    .important label {
+        line-height: 1.8;
+        margin: 0px;
+    }
+    
+    .table {
+        margin: 20px 0px;
+    }
+    
+    .square-image {
+        width: 100%;
+        height: 0;
+        padding: 50% 0;
+        background-size: contain;
+        /*background-size: cover;*/
+        background-repeat: no-repeat !important;
+        background-position: center center;
+        border-radius: 4px;
+    }
+    
+    .print-item-image {
+        object-fit: contain;
+    }
+    
+    .pdf-variables,
+    .pdf-variable,
+    .visible-pdf {
+        display: none !important;
+    }
+    
+    .print-format {
+        font-size: 18px;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Open Sans", sans-serif;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .page-break {
+        page-break-after: always;
+    }
+    
+    .print-heading {
+        border-bottom: 1px solid #aaa;
+        margin-bottom: 10px;
+    }
+    
+    .print-heading h2 {
+        margin: 0px;
+    }
+    
+    .print-heading h4 {
+        margin-top: 5px;
+    }
+    
+    table.no-border,
+    table.no-border td {
+        border: 0px;
+    }
+    
+    .print-format label {
+        /* wkhtmltopdf breaks label into multiple lines when it is inline-block */
+        display: block;
+    }
+    
+    .print-format img {
+        max-width: 100%;
+    }
+    
+    .print-format table td>.primary:first-child {
+        font-weight: bold;
+    }
+    
+    .print-format td,
+    .print-format th {
+        vertical-align: top !important;
+        padding: 6px !important;
+    }
+    
+    .print-format p {
+        margin: 3px 0px 3px;
+    }
+    
+    .print-format table td pre {
+        white-space: normal;
+        word-break: normal;
+    }
+    
+    table td div {
+        /* needed to avoid partial cutting of text between page break in wkhtmltopdf */
+        page-break-inside: avoid !important;
+    }
+    /* hack for webkit specific browser */
+    
+    @media (-webkit-min-device-pixel-ratio:0) {
+        thead,
+        tfoot {
+            display: table-header-group;
+        }
+    }
+    
+    [document-status] {
+        margin-bottom: 5mm;
+    }
+    
+    .signature-img {
+        background: #fff;
+        border-radius: 3px;
+        margin-top: 5px;
+        max-height: 150px;
+    }
+    
+    .print-preview [data-fieldtype="Table"] {
+        overflow: auto;
+    }
+    
+    .print-heading {
+        text-align: center;
+        text-transform: uppercase;
+        color: #666;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #d1d8dd;
+    }
+    
+    .print-heading-pic {
+        text-align: right;
+        text-transform: uppercase;
+        color: #666;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #d1d8dd;
+    }
+    
+    .print-heading h2 {
+        font-size: 24px;
+    }
+    
+    .print-format th {
+        background-color: #ebebeb !important;
+        border-bottom: 0px !important;
+    }
+    
+    tr .applicant {
+        background-color: #fff !important;
+        border-bottom: 0px !important;
+    }
+    /* modern format: for-test */
+</style>
+<div class="print-format-gutter" id="watermark">
+    <div class="print-format">
+        <div class="page-break">
+            <div>
+                <div class="letter-head">
+                    <img src="{{ url_for('static',filename='images/me1.png' ) }}" style="width: 100%;">
+                </div>
+                <hr class="bg-danger">
+                <div class="print-heading-pic">
+                    <img src="{{ applicant_image }}" style="width: 20%; height:100%;">
+                    <div>
+                        <br> Application ID:
+                        <h2><small>{{applicant.card}}</small></h2>
+                        Application PIN:
+                        <h2><small>{{applicant.card.pin}}</small></h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row section-break">
+
+                <div class="row section-break">
+                    <div class="col-md-12">
+                        <!-- applicant personal information -->
+                        <div class="print-heading">
+                            <h2>APPLICANT PERSONAL INFORMATION</h2>
+                        </div>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Gender/Sex</th>
+                                    <th>Birth Date</th>
+                                    <th>Home Town</th>
+                                    <th>Home Region</th>
+                                    <th>Marital status</th>
+                                    <th>No. Children</th>
+                                    <th>Religion</th>
+                                    <th>Sponsorship</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{applicant|upper}}</td>
+                                    <td>{{applicant.gender|upper}}</td>
+                                    <td>{{applicant.date_of_birth|upper}}</td>
+                                    <td>{{applicant.home_town|upper}}</td>
+                                    <td>{{applicant.home_region|upper}}</td>
+                                    <td>{{applicant.marital_status|upper}}</td>
+                                    <td>{{applicant.childrens|upper}}</td>
+                                    <td>{{applicant.religion|upper}}</td>
+                                    <td>{{applicant.sponsorship|upper}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- applicant contact information -->
+                        <div class="print-heading">
+                            <h2 class="text-center">APPLICANT CONTACT INFORMATION</h2>
+                        </div>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-0">Country</th>
+                                    <th class="col-md-0">Contact No.1</th>
+                                    <th class="col-md-0">Email</th>
+                                    <th class="col-md-0">Residence Address</th>
+                                    <th class="col-md-0">Postal Address</th>
+                                    <th class="col-md-0">Digital Address</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{applicant.contact.country|upper}}</td>
+                                    <td>{{applicant.contact.contact_number|upper}}</td>
+                                    <td>{{applicant.contact}}</td>
+                                    <td>{{applicant.contact.residence_address|upper}}</td>
+                                    <td>{{applicant.contact.postal_address|upper}}</td>
+                                    <td>{{applicant.contact.digital_address|upper}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Alternate No.</th>
+                                    <th class="col-md-0">Postal Region</th>
+                                    <th class="col-md-0">Postal Town</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{applicant.contact.contact_number_2|upper}}</td>
+                                    <td>{{applicant.contact.post_region|upper}}</td>
+                                    <td>{{applicant.contact.post_town|upper}}</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- applicant educational history -->
+                        <div class="print-heading">
+                            <h2>APPLICANT EDUCATIONAL HISTORY</h2>
+                        </div>
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>School Name</th>
+                                    <th>Location</th>
+                                    <th>Date Started</th>
+                                    <th>Date Completed</th>
+                                    <th>Programmme Offered</th>
+                                    <th>Level of Education</th>
+                                    {% if applicant.education.education_type !='highSchool' %}
+                                    <th>Graduated Class</th>
+                                    <th>Graduated GPA</th>
+                                    {% endif %}
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{applicant.education|upper}}</td>
+                                    <td>{{applicant.education.location|upper}}</td>
+                                    <td>{{applicant.education.date_started|upper}}</td>
+                                    <td>{{applicant.education.date_completed|upper}}</td>
+                                    <td>{{applicant.education.offered_programme|upper}}</td>
+                                    <td>{{applicant.education.education_type|upper}}</td>
+                                    {% if applicant.education.education_type !='highSchool' %}
+                                    <td>{{applicant.education.graduated_class}}</td>
+                                    <td>{{applicant.education.graduated_gpa}}</td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Applicant Employment History -->
+                        {% if applicant.employed %} {% for employment in applicant.employments.all() %}
+                        <div class="print-heading" style="margin-top: 10px;">
+                            <h2 class="text-center">APPLICANT EMPLOYMENT HISTORY</h2>
+                        </div>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Organization's Name</th>
+                                    <th>Organization's Address</th>
+                                    <th>Organization's Contact</th>
+                                    <th>Postion Held</th>
+                                    <th>Date Started</th>
+                                    <th>Date Ended</th>
+                                    <th>Years of Experience</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{employment|upper}}</td>
+                                    <td>{{employment.organisation_address|upper}}</td>
+                                    <td>{{employment.organisation_contact|upper}}</td>
+                                    <td>{{employment.position_held|upper}}</td>
+                                    <td>{{employment.date_started|upper}}</td>
+                                    <td>{{employment.date_ended|upper}}</td>
+                                    <td>{{employment.years_of_work_experience()|upper}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {% endfor %} {% endif %}
+                        <!-- applicant Referee or Guidian Information -->
+                        <div class="print-heading">
+                            <h2>APPLICANT GUIDIAN / REFEREE'S INFORMATION</h2>
+                        </div>
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="table-sr">Sr</th>
+                                    <th class="col-md-2">Guardian Name</th>
+                                    <th class="col-md-2">Work Place</th>
+                                    <th class="col-md-2">Postal Address</th>
+                                    <th class="col-md-2">Email Address</th>
+                                    <th class="col-md-2">Contact No</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td class="table-sr">1</td>
+                                    <td>
+                                        <div class="value">{{applicant.referee}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="value">{{applicant.referee.referees_work_place}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="value">{{applicant.referee.referees_address}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="value">{{applicant.referee.referees_email}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="value">{{applicant.referee.referees_contact}}</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- applicant programme of choice information -->
+                <div class="row section-break">
+
+
+                    <div data-fieldname="program_to_pursue" data-fieldtype="Table">
+                        <div class="print-heading">
+                            <h2>APPLICANT SELECTED CHOICES</h2>
+                        </div>
+                        {% if applicant.choice or applicant.postgradchoice %}
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">No.</th>
+                                    <th class="col-md-4">Programme</th>
+                                    <th class="col-md-4">Type Of Program</th>
+                                    <th class="col-md-4">Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="table-sr">1</td>
+                                    <td>
+                                        <div>{{first_ch_programme}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{first_ch_programme.type}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{first_ch_programme.programme_duration}}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <div>{{second_ch_programme}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{second_ch_programme.type}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{second_ch_programme.programme_duration}}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <div>{{third_ch_programme}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{third_ch_programme.type}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{third_ch_programme.programme_duration}}</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h3>You have not selected any programme of your choice</h3>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <!-- applicant results information -->
+                <div class="col-md-12 column-break">
+                    {% if applicant.results.all() %}
+                    <div>
+                        <div class="print-heading">
+                            <h2>APPLICANT RESULTS INFORMATION</h2>
+                        </div>
+
+                        {% for result in applicant.results.all() %}
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Index Number</th>
+                                    <td>{{result}}</td>
+                                    <th>Examination Type</th>
+                                    <td>{{result.results_type|upper}}</td>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr></tr>
+                                <tr></tr>
+                                <tr style="margin-left: 10px;">
+                                    <td class="mb-2 text-center"></td>
+                                </tr>
+                                <tr></tr>
+                                <tr></tr>
+                                <tr>
+                                    <th>{{result.subject_core_1}}</th>
+                                    <td>{{result.core_grade_1}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_core_2}}</th>
+                                    <td>{{result.core_grade_2}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_core_3}}</th>
+                                    <td>{{result.core_grade_3}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_core_4}}</th>
+                                    <td>{{result.core_grade_4}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_elective_1}}</th>
+                                    <td>{{result.elective_grade_1}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_elective_2}}</th>
+                                    <td>{{result.elective_grade_2}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_elective_3}}</th>
+                                    <td>{{result.elective_grade_3}}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{result.subject_elective_4}}</th>
+                                    <td>{{result.elective_grade_4}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <div class="row section-break">
+                <div class="col-md-12 column-break">
+                    <div class="row  data-field" data-fieldname="acknowledge" data-fieldtype="Check">
+                        <div class="col-md-12">
+                            <div>
+                                <b>DECLERATION</b><br>
+                                <p>I declare that the information given above is to the best of my knowledge and believe correct.</p>
+                                <p>Applicant Signature: ........................ Date:..dd../..mm../...yyyy...</p>
+                            </div>
+                            <div>
+                                <b>WITNESS</b><br>
+                                <p>The decleration should be witnessed by someone of high repute (Senior Public Servant/Clerfymen/Lawyer/Medical Practioner)</p>
+                                <p>
+                                    <p>Name:....................................... Status:............................</p>
+                                    <p>Address:......................................... </p>
+                                    <p>Signature:...............................Date:...dd.../...mm.../....yyyy.... Stamp:................</p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                print();
+                const page_div = document.querySelector('.page-break');
+
+                page_div.style.display = 'flex';
+                page_div.style.flexDirection = 'column';
+
+                const footer_html = document.getElementById('footer-html');
+                footer_html.classList.add('hidden-pdf');
+                footer_html.classList.remove('visible-pdf');
+                footer_html.style.order = 1;
+                footer_html.style.marginTop = '20px';
+            });
+        </script>
+        {% endblock %}

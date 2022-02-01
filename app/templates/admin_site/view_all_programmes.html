@@ -1,0 +1,78 @@
+{% extends 'base.html' %} {% block title %} programmes by level {% endblock %} {% block content %}
+<h2 class=" text-center" style="font-size: 25px;">Graduate Level Programmes Information</h2>
+<hr class="my-3"> {% for department in programmes %}
+<h3 class="text-center mb-3 " style="font-size: 22px;">{{department}}</h3>
+{% if department.types.all() %} {% for level in department.types.all() %}
+<h4>{{level}} Programmes</h4>
+<hr class="my-2">
+{% if level.programmes.all() %}
+<table class="table table-hover table-responsive  bg-white shadow-lg mt-1">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-2">Action</th>
+            <th class="col-md-2">Level</th>
+            <th class="col-md-2">Cut-off-point/GPA</th>
+            <th class="col-md-2">Avaliable</th>
+            <th class="col-md-2">Date Started</th>
+            <th class="col-md-2">Add Required Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for programme in level.programmes.all() %}
+        <tr>
+            <td scope="row">
+                <a href="{{ url_for('admin_panel.edit_undegrad_programme',undegrad_programme_id=programme.id ) }}" class="btn btn-info btn-sm mb-1">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="#" id="programmes" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i>
+                    <input type="hidden" id="programmesid" value="{{programme.id}}">
+                </a>
+            </td>
+            <td>{{programme.programme_name}}</td>
+            <td>{{programme.cut_off_point}}</td>
+            <td>{{programme.is_avaliable}}</td>
+            <td>{{programme.date_created}}</td>
+            <td class="text-center">
+                <a href="{{ url_for('admin_panel.load_require_subjects',programme_id=programme.id ) }}" class="btn btn-primary btn-sm">
+                                                Add <i class="fas fa-plus"></i>   
+                                            </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="col-md-12">
+    <div class="card border-0 mb-5">
+        <div class="card-body text-danger text-center shadow-lg ">
+            <h3 class="card-title"> No PROGRAMME Under this LEVEL</h3>
+            <p class="card-text text-info">Click on the PLUS sign on top to add a PROGRAMME.
+                <a href="{{ url_for('admin_panel.view_post_graduate_programmes', ) }}" class="btn btn-info"> CLICK THIS LINK TO VIEW IF IT'S POSTGRADUATE.</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %} {% endif %} {% endfor %}
+<script>
+    var levelItems = document.querySelectorAll('#programmes');
+    var levelIds = document.querySelectorAll('#programmesid');
+    var url = '/admin/delete-programme/';
+
+    function deleteItem(deleteItems, itemIds, url) {
+        for (const key in deleteItems) {
+            if (Object.hasOwnProperty.call(deleteItems, key)) {
+                const element = deleteItems[key];
+                element.addEventListener('click', function() {
+                    let result = confirm('Erase Record?');
+                    if (result == true) {
+                        element.href = url + itemIds[key].value;
+                    }
+                })
+            }
+        }
+    }
+    deleteItem(levelItems, levelIds, url)
+</script>
+{% endblock %}

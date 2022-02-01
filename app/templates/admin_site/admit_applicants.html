@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block title %} admit applicants {% endblock %}
+<!--  -->
+{% block content %}
+<div class="row">
+<div class="col-md-7"></div>
+<div class="col-md-5 justify-content-end justify-content-lg-end ">
+    <a style="float:right;margin-left:5px;"id="get-applicant" class="btn btn-secondary" href="{{url_for('static',filename='applicants/unshort_listed.csv')}}">
+        Unshort Listed <i class="fas fa-download"></i>
+    </a>
+    <a style="float:right;margin-right:5px;" id="get-applicant" class="btn btn-info" href="{{url_for('static',filename='applicants/applicants_data.csv')}}">
+        Short Listed <i class="fas fa-download"></i>
+    </a>
+    <button style="float:right;margin-right:5px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#modelId">
+        Upload <i class="fas fa-upload"></i>
+    </button>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add File</h5> &NonBreakingSpace;<span class="text-muted">eg. only files with <b>.csv</b> extention</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <form action="{{ url_for('admin_panel.upload_admited_applicants') }}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="file"  id="upload-file" name="file" class="form-control-file">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" id="submit-file" value="Submit" class="btn btn-primary">
+                </div>
+            </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+</div>
+
+<div class="container-fluid mb-3">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% for category,message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button> {{message}}
+    </div>
+    {% endfor %} {% endwith %}
+</div>
+<h1 class="text-center" style="font-size: 20px;">Admit Applicant</h1>
+<hr class="my-2 bg-danger">
+<table class="table table-hover text-center table-responsive bg-white">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="col-md-1">No.</th>
+            <th class="col-md-2">Full Name</th>
+            <th class="col-md-2">Education Level</th>
+            <th class="col-md-2">Grade/GPA</th>
+            <th class="col-md-1">Cutoff</th>
+            <th class="col-md-2">Programme</th>
+            <th class="col-md-2">Status</th>
+            <th class="col-md-2">Admit</th>
+            <th class="col-md-2">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for applicant in applicants %} {% if applicant.agreed.agreed==True %} {% if applicant.admission.admission_status != 'admitted'%}
+        {% if applicant.card.buy.application_type == 'DIRECT'%}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td scope="row">
+                <input type="hidden" id="appname" value="{{applicant}}"> {{applicant}}
+                <input type="hidden" id="appid" value="{{applicant.id}}">
+            </td>
+            <td>{{applicant.education.education_type}}</td>
+            {% if applicant.education.graduated_gpa %}
+            <td>{{applicant.education.graduated_class}}</td>
+            {% else%}
+            <td id="res"></td>
+            {% endif %}
+            <td id="cutoff"></td>
+            <td>
+                <select class="form-control" name="" id="choice">
+                                    <option value="{{applicant.choice.first_choice}}">{{applicant.choice.first_choice}}</option>
+                                    <option value="{{applicant.choice.second_choice}}">{{applicant.choice.second_choice}}</option>
+                                    <option value="{{applicant.choice.third_choice}}">{{applicant.choice.third_choice}}</option>
+                                  </select>
+            </td>
+            <td id="action"></td>
+            <td>
+                <input type="checkbox" name="select_applicant" id="saveStudent">
+            </td>
+            <td>
+                <a href="{{ url_for('admin_panel.view_applicant_details',applicant_id=applicant.id ) }}" class="btn btn-primary">View Details</a>
+            </td>
+        </tr>
+        {%endif%}{% endif %} {% endif %} {% endfor %}
+    </tbody>
+</table>
+<div class="col-md-12 bg-white p-2">
+    <button id="save-admitted" class="btn btn-success">Submit</button>
+</div>
+{% endblock %}
+<!--  -->
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        fetch('get-applicant-data').then(function(response){
+            response.json().then(function(data){
+                console.log(data);
+                this.href= `{{url_for('static',filename='applicants/applicants_data.csv')}}`
+            });
+        });
+        var programmes = document.querySelectorAll('#programmechoice');
+        let courses = document.querySelectorAll('#choice');
+        let appid = document.querySelectorAll('#appid');
+        let res = document.querySelectorAll('#res');
+        let cutoff = document.querySelectorAll('#cutoff');
+        let action = document.querySelectorAll('#action');
+        let saves = document.querySelectorAll('#saveStudent');
+        let appname = document.querySelectorAll('#appname');
+        let saveAdmitteds = document.querySelector('#save-admitted');
+        var server_data = {};
+        for (const key in courses) {
+            if (Object.hasOwnProperty.call(courses, key)) {
+                const element = courses[key];
+                fetch('get-grade/' + appid[key].value + '/' + courses[key].value).then(function(response) {
+                    response.json().then(function(data) {
+                        if(data['results']['grade'] && data['results']['cutoff']){
+                            res[key].textContent = data['results']['grade'];
+                            cutoff[key].textContent = data['results']['cutoff'];
+                        }
+                        if (data['results']['grade'] <= data['results']['cutoff']){
+                            action[key].textContent = 'short listed'
+                            saves[key].checked = true;
+                            server_data[key] = {
+                                'applicant option': courses[key].value,
+                                'admission status': 'admitted',
+                                'applicant name': appname[key].value,
+                                'applicant id': appid[key].value,
+                            }
+                            console.log(server_data)
+                        }else{
+                            action[key].textContent = 'applied'
+                        }
+                    })
+                });
+            }
+        }
+        for (const key in courses) {
+            if (Object.hasOwnProperty.call(courses, key)) {
+                const element = courses[key];
+                element.addEventListener('change', function() {
+                    fetch('get-grade/' + appid[key].value + '/' + courses[key].value).then(function(response) {
+                        response.json().then(function(data) {
+                            if(data['results']['grade'] && data['results']['cutoff']){
+                                res[key].textContent = data['results']['grade'];
+                                cutoff[key].textContent = data['results']['cutoff'];
+                            }
+                            if (data['results']['grade'] <= data['results']['cutoff']){
+                                action[key].textContent = 'short listed'
+                                saves[key].checked = true;
+                                server_data[key] = {
+                                    'applicant option': courses[key].value,
+                                    'admission status': 'admitted',
+                                    'applicant name': appname[key].value,
+                                    'applicant id': appid[key].value,
+                                }
+                                console.log(server_data)
+                            }else{
+                                action[key].textContent = 'applied'
+                            }
+                        })
+                    })
+                });
+            }
+        }
+        for (const key in saves) {
+            if (Object.hasOwnProperty.call(saves, key)) {
+                const element = saves[key];
+                element.addEventListener('click', function() {
+                    if (element.checked) {
+                        server_data[key] = {
+                            'applicant option': courses[key].value,
+                            'admission status': 'admitted',
+                            'applicant name': appname[key].value,
+                            'applicant id': appid[key].value,
+                        }
+                        console.log(server_data)
+                    } else {
+                        delete server_data[key];
+                        console.log(server_data)
+                    }
+                });
+            }
+        }
+        saveAdmitteds.addEventListener('click', function(event) {
+            URL = "/admin/admit";
+            data_state = {
+                method: "POST",
+                headers: {
+                    'content-type': "application/json",
+                },
+                body: JSON.stringify(server_data)
+            }
+            if (data_state['body'] != "{}") {
+                fetch(URL, data_state)
+                    .then(response => response.json())
+                    .then((data) => alert(data))
+                    .catch((err) => {
+                        console.log(err)
+                    });
+                console.log(data_state);
+                console.log('admitted')
+                history.back();
+                //fetch('/admit-applicants')
+            } else {
+                alert('No Applicant Data Selected.');
+                // event.preventDefault();
+            }
+        });
+        // To implement the results calculation on 
+        // the client side
+        // to help view the proposed results for each of the programmes
+    });
+</script>
+{% endblock %}
